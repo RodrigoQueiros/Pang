@@ -10,6 +10,9 @@ let left = false
 let harpoons = []
 let maxHarpoons = 1 //For powerUps
 
+let iniRadius = 30
+let minimumRadius = iniRadius / 4
+
 let balls = []
 
 //Player object
@@ -40,15 +43,15 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
     if (this.right) {
       this.spriteLine = 0
       this.step = this.step + 20
-      if ( this.step > canvas.width - this.playerWidth){
-        this.step = canvas.width - this.playerWidth -1
+      if (this.step > canvas.width - this.playerWidth) {
+        this.step = canvas.width - this.playerWidth - 1
       }
       ctx.drawImage(this.image, this.currentFrame * this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
     }
     else if (this.left) {
       this.spriteLine = 150
       this.step = this.step - 20
-      if ( this.step < 0 ){
+      if (this.step < 0) {
         this.step = 1
       }
       ctx.drawImage(this.image, this.currentFrame * this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
@@ -76,7 +79,7 @@ function Harpoon(position) {
 
   this.draw = function () {
 
-    
+
     ctx.beginPath()
     ctx.lineWidth = 5
     ctx.strokeStyle = `rgb(150,90,255)`
@@ -84,19 +87,18 @@ function Harpoon(position) {
     ctx.lineTo(this.x, this.y - this.increment)
     ctx.stroke()
     this.increment += 10
-    
-  }  
+
+  }
   this.getCurrentPos = function () {
 
-    let harpoonPos = {x:this.x-2.5, y:this.y-this.increment,x1:this.x+2.5}
+    let harpoonPos = { x: this.x - 2.5, y: this.y - this.increment, x1: this.x + 2.5 }
     return harpoonPos
-    
-    
+
   }
 
 }
 
-function Ball(x,y,vx,vy,radius,speed,velIn,ang){
+function Ball(x, y, vx, vy, radius, speed, velIn, ang) {
   this.x = x
   this.y = y
   this.vx = vx
@@ -106,44 +108,44 @@ function Ball(x,y,vx,vy,radius,speed,velIn,ang){
   this.velIn = velIn
   this.ang = ang
 
-  this.draw = function(){
-    ctx.beginPath();   
-    ctx.arc(this.x,this.y,this.radius,0,2*Math.PI);     
-    ctx.fillStyle= 'red' 
-    ctx.fill(); 
+  this.draw = function () {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    ctx.fillStyle = 'red'
+    ctx.fill();
   }
 
-  this.update = function(){
+  this.update = function () {
 
     this.x += this.vx
     this.y += this.vy
 
-    if(this.y + this.radius >= canvas.height){      
+    if (this.y + this.radius >= canvas.height) {
       this.vy = -this.vy
       //this.y = canvas.height- this.radius
       //this.vy = (this.velIn + 20) * Math.sin(this.ang * Math.PI / 180)
-      
+
     }
-    else if(this.x + this.radius >= canvas.width){
+    else if (this.x + this.radius >= canvas.width) {
       this.vx = -this.vx
       //this.x = canvas.width- this.radius
     }
-    else if(this.x - this.radius <= 0){
+    else if (this.x - this.radius <= 0) {
       this.vx = -this.vx
       //this.x = this.radius
     }
-    else if(this.y - this.radius <= 0){
+    else if (this.y - this.radius <= 0) {
       this.vy = -this.vy
       //this.y = this.radius
     } else {
       this.vy += this.speed
     }
 
-    
+
   }
   this.getCurrentPos = function () {
 
-    let ballPos = {x:this.x, y:this.y,r:this.radius}
+    let ballPos = { x: this.x, y: this.y, r: this.radius }
     return ballPos
 
 
@@ -160,14 +162,14 @@ let player1 = new Player(new Image(), playerWidth, playerHeight, step, spriteLin
 window.onload = function () {
   //Falta ver altura max e relacionar com raio e vy
   let x = 100
-  let y = 400    
-  let radius = 30
-  let speed = 0.1  
+  let y = 400
+  let radius = iniRadius
+  let speed = 0.1
   let velIn = 5
   let ang = -85
   let vx = velIn * Math.cos(ang * Math.PI / 180)
   let vy = velIn * Math.sin(ang * Math.PI / 180)
-  balls.push(new Ball(x,y,vx,vy,radius,speed,velIn,ang))
+  balls.push(new Ball(x, y, vx, vy, radius, speed, velIn, ang))
 
   window.setInterval(Animate, 1000 / 60)
   //Animate()
@@ -190,41 +192,48 @@ function Animate() {
   }
 
   for (let i = 0; i < harpoons.length; i++) {
-    
+
     harpoons[i].draw()
-    
+
   }
 
   for (let j = 0; j < harpoons.length; j++) {
-    
-    if (harpoons[j].y - harpoons[j].increment < 10) { 
-      harpoons.splice(j, 1) 
+
+    if (harpoons[j].y - harpoons[j].increment < 10) {
+      harpoons.splice(j, 1)
     }
   }
 
-  for (let h = 0; h< balls.length; h++) {
-    balls[h].draw()  
-    
+  for (let h = 0; h < balls.length; h++) {
+    balls[h].draw()
+
   }
 
-  for (let q= 0; q< balls.length; q++) {
+  for (let q = 0; q < balls.length; q++) {
 
-    balls[q].update()  
+    balls[q].update()
 
-    for(let j = 0; j<harpoons.length;j++)
-    {
-      if(balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().x
-        && balls[q].getCurrentPos().x -balls[q].getCurrentPos().r <= harpoons[j].getCurrentPos().x1
+    for (let j = 0; j < harpoons.length; j++) {
+      if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().x
+        && balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= harpoons[j].getCurrentPos().x1
         && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().y
-      ){
-        console.log("O carlos é lindo")
-        harpoons.splice(j, 1) 
+      ) {
+        harpoons.splice(j, 1)
 
-        balls.splice(q,1)
-        balls.push(new Ball(balls[q].getCurrentPos().x,balls[q].getCurrentPos().y,vx,vy,radius,speed,velIn,ang))
-        balls.push(new Ball(x,y,vx,vy,radius,speed,velIn,ang))
+        if (!(balls[q].getCurrentPos().r == minimumRadius)) {
+
+          divideBall(balls[q].getCurrentPos().x, balls[q].getCurrentPos().y, balls[q].getCurrentPos().r)
+
+          balls.splice(q, 1)
+
+        }
+        else {
+
+          balls.splice(q, 1)
+
+        }
+
       }
-
 
     }
 
@@ -238,7 +247,37 @@ function Animate() {
   }
 
   //window.requestAnimationFrame(Animate)
-  
+}
+
+function divideBall(x, y, r) {
+
+  let flag = 1
+
+  if (flag == 1) {
+
+    let ang = ((Math.PI / 4))
+    let velIn = 5
+    let vx = velIn * Math.cos(ang * Math.PI / 180)
+    let vy = velIn * Math.sin(ang * Math.PI / 180)
+    let speed = 0.1
+    console.log(vy)
+
+    balls.push(new Ball(x, y, vx, vy - 5, r / 2, speed, velIn, ang))//We need to check out why this works
+    flag++
+
+  }
+  if (flag == 2) {
+
+    let ang = ((Math.PI / 4))
+    let velIn = 5
+    let vx = velIn * Math.cos(ang * Math.PI / 180)
+    let vy = velIn * Math.sin(ang * Math.PI / 180)
+    let speed = 0.1
+
+    balls.push(new Ball(x, y, -vx, vy - 5, r / 2, speed, velIn, ang))
+
+  }
+
 }
 
 // Key press and Key Up - eventListener
@@ -262,9 +301,10 @@ function keyUp(e) {
       left = false
       break;
     case 32:
-      if(harpoons.length<maxHarpoons){
-      harpoons.push(new Harpoon(player1.getCurrentPos()))}
-      
+      if (harpoons.length < maxHarpoons) {
+        harpoons.push(new Harpoon(player1.getCurrentPos()))
+      }
+
       break;
   }
 }
