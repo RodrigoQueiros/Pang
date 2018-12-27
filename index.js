@@ -4,15 +4,23 @@ let ctx = canvas.getContext("2d");
 canvas.width = 1000;
 canvas.height = 600;
 
+//Player
 let currentFrame = 0
 let right = false
 let left = false
+let up = false
+let down = false
+let lives = 3
+
+
+//Harpoon
 let harpoons = []
 let maxHarpoons = 1 //For powerUps
 
-let iniRadius = 30
-let minimumRadius = iniRadius / 4
 
+//Ball
+let iniRadius = 30 
+let minimumRadius = iniRadius / 4
 let balls = []
 
 //Player object
@@ -31,11 +39,13 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
   }
 
   //Draw player mov
-  this.listenEvent = function (right, left, nothing, currentFrame) {
+  this.listenEvent = function (right, left, nothing, currentFrame, up,down) {
     this.right = right
     this.left = left
     this.nothing = nothing
     this.currentFrame = currentFrame
+    this.up = up
+    this.down = down
 
     ctx.fillStyle = "white"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -46,15 +56,26 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
       if (this.step > canvas.width - this.playerWidth) {
         this.step = canvas.width - this.playerWidth - 1
       }
-      ctx.drawImage(this.image, this.currentFrame * this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+      //ctx.drawImage(this.image, this.currentFrame * this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+      ctx.drawImage(this.image, this.playerWidth*6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
     }
     else if (this.left) {
-      this.spriteLine = 150
+      this.spriteLine = 110
       this.step = this.step - 20
       if (this.step < 0) {
         this.step = 1
       }
-      ctx.drawImage(this.image, this.currentFrame * this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+      ctx.drawImage(this.image, this.playerWidth*6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+    }
+    else if(this.up){
+      this.spriteLine = 110
+      this.step = this.step - 20
+      ctx.drawImage(this.image, this.playerWidth*3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y - this.step, this.playerWidth, this.playerHeight)
+    }
+    else if(this.down){
+      this.spriteLine = 110
+      this.step = this.step - 20
+      ctx.drawImage(this.image, this.playerWidth*3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y + this.step, this.playerWidth, this.playerHeight)
     }
     else if (this.nothing) {
       ctx.drawImage(this.image, this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
@@ -153,8 +174,8 @@ function Ball(x, y, vx, vy, radius, speed, velIn, ang) {
 }
 
 //Creation of player
-let playerWidth = 104
-let playerHeight = 150
+let playerWidth = 1000/9
+let playerHeight = 550/5
 let step = 0
 let spriteLine = 0
 let player1 = new Player(new Image(), playerWidth, playerHeight, step, spriteLine);
@@ -172,23 +193,32 @@ window.onload = function () {
   balls.push(new Ball(x, y, vx, vy, radius, speed, velIn, ang))
 
   window.setInterval(Animate, 1000 / 60)
-  //Animate()
+
 }
 
+
+
 function Animate() {
+  
 
   //Draw player
   player1.draw();
 
   //ListenEvent and Draw player mov
   if (right) {
-    player1.listenEvent(true, false, false, currentFrame)
+    player1.listenEvent(true, false, false, currentFrame,false,false)
   }
   else if (left) {
-    player1.listenEvent(false, true, false, currentFrame)
+    player1.listenEvent(false, true, false, currentFrame,false,false)
+  }
+  else if(up){
+    player1.listenEvent(false, false, false, currentFrame,true,false)
+  }
+  else if(down){
+    player1.listenEvent(false, false, false, currentFrame,false,true)
   }
   else {
-    player1.listenEvent(false, false, true, currentFrame)
+    player1.listenEvent(false, false, true, currentFrame,false,false)
   }
 
   for (let i = 0; i < harpoons.length; i++) {
@@ -237,6 +267,24 @@ function Animate() {
 
     }
 
+    if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= player1.getCurrentPos().x
+        && balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= player1.getCurrentPos().x + playerWidth
+        && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= player1.getCurrentPos().y
+      ) {
+
+        if(lives>0){
+          lives--
+
+        }
+        
+        if(lives==0){
+          console.log("game you over")
+
+        }
+        
+
+      }
+
 
   }
 
@@ -247,6 +295,9 @@ function Animate() {
   }
 
   //window.requestAnimationFrame(Animate)
+  //Draw lives
+  ctx.font = "16px Arial" 
+  ctx.fillText("lives: "+lives, 8, 20)
 }
 
 function divideBall(x, y, r) {
@@ -289,6 +340,12 @@ function keyDown(e) {
     case 37:
       left = true
       break;
+    case 38 :
+      up = true
+      break;
+    case 40 :
+      down = true
+      break;
   }
 }
 
@@ -299,6 +356,12 @@ function keyUp(e) {
       break;
     case 37:
       left = false
+      break;
+    case 38 :
+      up = false
+      break;
+    case 40 :
+      down = false
       break;
     case 32:
       if (harpoons.length < maxHarpoons) {
