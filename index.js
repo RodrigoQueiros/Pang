@@ -10,6 +10,7 @@ let right = false
 let left = false
 let up = false
 let down = false
+let space = false
 let lives = 3
 
 
@@ -39,13 +40,14 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
   }
 
   //Draw player mov
-  this.listenEvent = function (right, left, nothing, currentFrame, up,down) {
+  this.listenEvent = function (right, left, nothing, currentFrame, up,down,space) {
     this.right = right
     this.left = left
     this.nothing = nothing
     this.currentFrame = currentFrame
     this.up = up
     this.down = down
+    this.space = space
 
     ctx.fillStyle = "white"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -67,14 +69,21 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
       }
       ctx.drawImage(this.image, this.playerWidth*6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
     }
+    else if(this.space){ //Precisamos pensar melhor na tecla espaço, estou a por true quando é up, e false a down, mas o harpão so lança a down
+      this.spriteLine = 440
+      this.step = this.step
+      console.log(this.playerWidth*5)
+      ctx.drawImage(this.image, this.playerWidth*4, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y, this.playerWidth, this.playerHeight)
+      console.log(this.playerWidth*5)
+    }
     else if(this.up){
       this.spriteLine = 110
-      this.step = this.step - 20
+      this.step = this.step
       ctx.drawImage(this.image, this.playerWidth*3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y - this.step, this.playerWidth, this.playerHeight)
     }
     else if(this.down){
       this.spriteLine = 110
-      this.step = this.step - 20
+      this.step = this.step
       ctx.drawImage(this.image, this.playerWidth*3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y + this.step, this.playerWidth, this.playerHeight)
     }
     else if (this.nothing) {
@@ -205,20 +214,25 @@ function Animate() {
   player1.draw();
 
   //ListenEvent and Draw player mov
+
+
   if (right) {
-    player1.listenEvent(true, false, false, currentFrame,false,false)
+    player1.listenEvent(true, false, false, currentFrame,false,false,false)
   }
   else if (left) {
-    player1.listenEvent(false, true, false, currentFrame,false,false)
+    player1.listenEvent(false, true, false, currentFrame,false,false,false)
+  }
+  else if(space){
+    player1.listenEvent(false, false, false, currentFrame,false,false,true)
   }
   else if(up){
-    player1.listenEvent(false, false, false, currentFrame,true,false)
+    player1.listenEvent(false, false, false, currentFrame,true,false,false)
   }
   else if(down){
-    player1.listenEvent(false, false, false, currentFrame,false,true)
+    player1.listenEvent(false, false, false, currentFrame,false,true,false)
   }
   else {
-    player1.listenEvent(false, false, true, currentFrame,false,false)
+    player1.listenEvent(false, false, true, currentFrame,false,false,false)
   }
 
   for (let i = 0; i < harpoons.length; i++) {
@@ -346,6 +360,9 @@ function keyDown(e) {
     case 40 :
       down = true
       break;
+    case 32:
+      space=true
+      break;
   }
 }
 
@@ -364,6 +381,7 @@ function keyUp(e) {
       down = false
       break;
     case 32:
+      space = false
       if (harpoons.length < maxHarpoons) {
         harpoons.push(new Harpoon(player1.getCurrentPos()))
       }
