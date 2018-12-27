@@ -8,6 +8,8 @@ let currentFrame = 0
 let right = false
 let left = false
 let harpoons = []
+let maxHarpoons = 1 //For powerUps
+
 let balls = []
 
 //Player object
@@ -73,6 +75,8 @@ function Harpoon(position) {
   this.increment = 0
 
   this.draw = function () {
+
+    
     ctx.beginPath()
     ctx.lineWidth = 5
     ctx.strokeStyle = `rgb(150,90,255)`
@@ -80,7 +84,16 @@ function Harpoon(position) {
     ctx.lineTo(this.x, this.y - this.increment)
     ctx.stroke()
     this.increment += 10
+    
+  }  
+  this.getCurrentPos = function () {
+
+    let harpoonPos = {x:this.x-2.5, y:this.y-this.increment,x1:this.x+2.5}
+    return harpoonPos
+    
+    
   }
+
 }
 
 function Ball(x,y,vx,vy,radius,speed,velIn,ang){
@@ -109,7 +122,7 @@ function Ball(x,y,vx,vy,radius,speed,velIn,ang){
       this.vy = -this.vy
       //this.y = canvas.height- this.radius
       //this.vy = (this.velIn + 20) * Math.sin(this.ang * Math.PI / 180)
-      console.log(this.vy)
+      
     }
     else if(this.x + this.radius >= canvas.width){
       this.vx = -this.vx
@@ -125,6 +138,15 @@ function Ball(x,y,vx,vy,radius,speed,velIn,ang){
     } else {
       this.vy += this.speed
     }
+
+    
+  }
+  this.getCurrentPos = function () {
+
+    let ballPos = {x:this.x, y:this.y,r:this.radius}
+    return ballPos
+
+
   }
 }
 
@@ -168,7 +190,9 @@ function Animate() {
   }
 
   for (let i = 0; i < harpoons.length; i++) {
-    harpoons[i].draw()  
+    
+    harpoons[i].draw()
+    
   }
 
   for (let j = 0; j < harpoons.length; j++) {
@@ -180,10 +204,31 @@ function Animate() {
 
   for (let h = 0; h< balls.length; h++) {
     balls[h].draw()  
+    
   }
 
   for (let q= 0; q< balls.length; q++) {
+
     balls[q].update()  
+
+    for(let j = 0; j<harpoons.length;j++)
+    {
+      if(balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().x
+        && balls[q].getCurrentPos().x -balls[q].getCurrentPos().r <= harpoons[j].getCurrentPos().x1
+        && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().y
+      ){
+        console.log("O carlos é lindo")
+        harpoons.splice(j, 1) 
+
+        balls.splice(q,1)
+        balls.push(new Ball(balls[q].getCurrentPos().x,balls[q].getCurrentPos().y,vx,vy,radius,speed,velIn,ang))
+        balls.push(new Ball(x,y,vx,vy,radius,speed,velIn,ang))
+      }
+
+
+    }
+
+
   }
 
   //Update sprite location
@@ -217,8 +262,9 @@ function keyUp(e) {
       left = false
       break;
     case 32:
-      harpoons.push(new Harpoon(player1.getCurrentPos()))
-      console.log(harpoons)
+      if(harpoons.length<maxHarpoons){
+      harpoons.push(new Harpoon(player1.getCurrentPos()))}
+      
       break;
   }
 }
