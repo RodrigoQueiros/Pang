@@ -20,7 +20,7 @@ let maxHarpoons = 1 //For powerUps
 
 
 //Ball
-let iniRadius = 30
+let iniRadius = 60
 let minimumRadius = iniRadius / 4
 let balls = []
 
@@ -77,7 +77,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
         this.spriteLine = 440
         this.step = this.step
 
-        ctx.drawImage(this.image, this.playerWidth * 5, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y, this.playerWidth, this.playerHeight)
+        ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y, this.playerWidth, this.playerHeight)
 
       }
       else if (this.down) {
