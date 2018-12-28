@@ -72,9 +72,9 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
     else if(this.space){ //Precisamos pensar melhor na tecla espaço, estou a por true quando é up, e false a down, mas o harpão so lança a down
       this.spriteLine = 440
       this.step = this.step
-      console.log(this.playerWidth*5)
-      ctx.drawImage(this.image, this.playerWidth*4, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y, this.playerWidth, this.playerHeight)
-      console.log(this.playerWidth*5)
+      
+      ctx.drawImage(this.image, this.playerWidth*5, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y, this.playerWidth, this.playerHeight)
+      
     }
     else if(this.up){
       this.spriteLine = 110
@@ -215,25 +215,37 @@ function Animate() {
 
   //ListenEvent and Draw player mov
 
+  
 
-  if (right) {
-    player1.listenEvent(true, false, false, currentFrame,false,false,false)
-  }
-  else if (left) {
-    player1.listenEvent(false, true, false, currentFrame,false,false,false)
-  }
-  else if(space){
+  if(space){
     player1.listenEvent(false, false, false, currentFrame,false,false,true)
   }
-  else if(up){
-    player1.listenEvent(false, false, false, currentFrame,true,false,false)
+  else{
+
+    if (right) {
+      player1.listenEvent(true, false, false, currentFrame,false,false,false)
+    }
+    else if (left) {
+      player1.listenEvent(false, true, false, currentFrame,false,false,false)
+    }  
+    else if(up){
+      player1.listenEvent(false, false, false, currentFrame,true,false,false)
+    }
+    else if(down){
+      player1.listenEvent(false, false, false, currentFrame,false,true,false)
+    }
+    else {
+      player1.listenEvent(false, false, true, currentFrame,false,false,false)
+    }
+
+
   }
-  else if(down){
-    player1.listenEvent(false, false, false, currentFrame,false,true,false)
-  }
-  else {
-    player1.listenEvent(false, false, true, currentFrame,false,false,false)
-  }
+
+
+  
+
+
+  
 
   for (let i = 0; i < harpoons.length; i++) {
 
@@ -360,9 +372,7 @@ function keyDown(e) {
     case 40 :
       down = true
       break;
-    case 32:
-      space=true
-      break;
+    
   }
 }
 
@@ -390,8 +400,17 @@ function keyUp(e) {
   }
 }
 
+function keySpaceBarHandler(e) {
+  if (e.keyCode == 32) {
+      space = true
+  }
+  
+}
+
+
 window.addEventListener("keydown", keyDown)
 window.addEventListener("keyup", keyUp)
+window.addEventListener("keypress", keySpaceBarHandler)
 
 
 
