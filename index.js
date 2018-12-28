@@ -20,7 +20,7 @@ let maxHarpoons = 1 //For powerUps
 
 
 //Ball
-let iniRadius = 30 
+let iniRadius = 30
 let minimumRadius = iniRadius / 4
 let balls = []
 
@@ -31,6 +31,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
   this.playerWidth = playerWidth
   this.playerHeight = playerHeight
   this.step = step
+  this.stepUpDown = step
   this.spriteLine = spriteLine
   this.image.src = "images2/gb_walk.png"
 
@@ -40,7 +41,8 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
   }
 
   //Draw player mov
-  this.listenEvent = function (right, left, nothing, currentFrame, up,down,space) {
+  this.listenEvent = function (right, left, nothing, currentFrame, up, down, space) {
+
     this.right = right
     this.left = left
     this.nothing = nothing
@@ -52,42 +54,58 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
     ctx.fillStyle = "white"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    if (this.right) {
-      this.spriteLine = 0
-      this.step = this.step + 20
-      if (this.step > canvas.width - this.playerWidth) {
-        this.step = canvas.width - this.playerWidth - 1
+    if (!(this.stepUpDown != 10)) {//Only happens when the sprite is not in the air
+      if (this.right) {
+        this.spriteLine = 0
+        this.step = this.step + 20
+        console.log(this.step)
+        if (this.step > canvas.width - this.playerWidth) {
+          this.step = canvas.width - this.playerWidth - 1
+        }
+        //ctx.drawImage(this.image, this.currentFrame * this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+        ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
       }
-      //ctx.drawImage(this.image, this.currentFrame * this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
-      ctx.drawImage(this.image, this.playerWidth*6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
-    }
-    else if (this.left) {
-      this.spriteLine = 110
-      this.step = this.step - 20
-      if (this.step < 0) {
-        this.step = 1
+      else if (this.left) {
+        this.spriteLine = 110
+        this.step = this.step - 20
+        if (this.step < 0) {
+          this.step = 1
+        }
+        ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
       }
-      ctx.drawImage(this.image, this.playerWidth*6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+      else if (this.space) { //Precisamos pensar melhor na tecla espaço, estou a por true quando é up, e false a down, mas o harpão so lança a down
+        this.spriteLine = 440
+        this.step = this.step
+
+        ctx.drawImage(this.image, this.playerWidth * 5, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y, this.playerWidth, this.playerHeight)
+
+      }
+      else if (this.down) {
+        this.spriteLine = 110
+        this.stepUpDown = this.stepUpDown - 10
+        ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y + this.stepUpDown, this.playerWidth, this.playerHeight)
+      }
+      else if (this.nothing) {
+        ctx.drawImage(this.image, this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+      }
     }
-    else if(this.space){ //Precisamos pensar melhor na tecla espaço, estou a por true quando é up, e false a down, mas o harpão so lança a down
-      this.spriteLine = 440
-      this.step = this.step
-      
-      ctx.drawImage(this.image, this.playerWidth*5, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y, this.playerWidth, this.playerHeight)
-      
-    }
-    else if(this.up){
+
+    //This will serve for the sprite come down
+    if (!(this.up)) { 
       this.spriteLine = 110
-      this.step = this.step
-      ctx.drawImage(this.image, this.playerWidth*3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y - this.step, this.playerWidth, this.playerHeight)
+      this.stepUpDown = this.stepUpDown - 10
+      ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y - this.stepUpDown, this.playerWidth, this.playerHeight)
+
     }
-    else if(this.down){
+    if (this.up) {
       this.spriteLine = 110
-      this.step = this.step
-      ctx.drawImage(this.image, this.playerWidth*3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y + this.step, this.playerWidth, this.playerHeight)
+      this.stepUpDown = this.stepUpDown + 10
+      ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y - this.stepUpDown, this.playerWidth, this.playerHeight)
+      //console.log(this.stepUpDown)
     }
-    else if (this.nothing) {
-      ctx.drawImage(this.image, this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+
+    if (this.stepUpDown <= 10) {
+      this.stepUpDown = 10
     }
   }
 
@@ -183,8 +201,8 @@ function Ball(x, y, vx, vy, radius, speed, velIn, ang) {
 }
 
 //Creation of player
-let playerWidth = 1000/9
-let playerHeight = 550/5
+let playerWidth = 1000 / 9
+let playerHeight = 550 / 5
 let step = 0
 let spriteLine = 0
 let player1 = new Player(new Image(), playerWidth, playerHeight, step, spriteLine);
@@ -208,44 +226,39 @@ window.onload = function () {
 
 
 function Animate() {
-  
+
 
   //Draw player
   player1.draw();
 
   //ListenEvent and Draw player mov
 
-  
 
-  if(space){
-    player1.listenEvent(false, false, false, currentFrame,false,false,true)
+
+  if (space) {
+    player1.listenEvent(false, false, false, currentFrame, false, false, true)
   }
-  else{
-
+  else {
     if (right) {
-      player1.listenEvent(true, false, false, currentFrame,false,false,false)
+      player1.listenEvent(true, false, false, currentFrame, false, false, false)
     }
     else if (left) {
-      player1.listenEvent(false, true, false, currentFrame,false,false,false)
-    }  
-    else if(up){
-      player1.listenEvent(false, false, false, currentFrame,true,false,false)
+      player1.listenEvent(false, true, false, currentFrame, false, false, false)
     }
-    else if(down){
-      player1.listenEvent(false, false, false, currentFrame,false,true,false)
+    else if (up) {
+      player1.listenEvent(false, false, false, currentFrame, true, false, false)
+    }
+    else if (down) {
+      player1.listenEvent(false, false, false, currentFrame, false, true, false)
     }
     else {
-      player1.listenEvent(false, false, true, currentFrame,false,false,false)
+      player1.listenEvent(false, false, true, currentFrame, false, false, false)
     }
 
 
   }
 
 
-  
-
-
-  
 
   for (let i = 0; i < harpoons.length; i++) {
 
@@ -294,22 +307,22 @@ function Animate() {
     }
 
     if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= player1.getCurrentPos().x
-        && balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= player1.getCurrentPos().x + playerWidth
-        && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= player1.getCurrentPos().y
-      ) {
+      && balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= player1.getCurrentPos().x + playerWidth
+      && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= player1.getCurrentPos().y
+    ) {
 
-        if(lives>0){
-          lives--
-
-        }
-        
-        if(lives==0){
-          console.log("game you over")
-
-        }
-        
+      if (lives > 0) {
+        lives--
 
       }
+
+      if (lives == 0) {
+        console.log("game you over")
+
+      }
+
+
+    }
 
 
   }
@@ -322,8 +335,8 @@ function Animate() {
 
   //window.requestAnimationFrame(Animate)
   //Draw lives
-  ctx.font = "16px Arial" 
-  ctx.fillText("lives: "+lives, 8, 20)
+  ctx.font = "16px Arial"
+  ctx.fillText("lives: " + lives, 8, 20)
 }
 
 function divideBall(x, y, r) {
@@ -366,13 +379,13 @@ function keyDown(e) {
     case 37:
       left = true
       break;
-    case 38 :
+    case 38:
       up = true
       break;
-    case 40 :
+    case 40:
       down = true
       break;
-    
+
   }
 }
 
@@ -384,10 +397,10 @@ function keyUp(e) {
     case 37:
       left = false
       break;
-    case 38 :
+    case 38:
       up = false
       break;
-    case 40 :
+    case 40:
       down = false
       break;
     case 32:
@@ -402,9 +415,9 @@ function keyUp(e) {
 
 function keySpaceBarHandler(e) {
   if (e.keyCode == 32) {
-      space = true
+    space = true
   }
-  
+
 }
 
 
