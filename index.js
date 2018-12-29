@@ -24,6 +24,53 @@ let iniRadius = 60
 let minimumRadius = iniRadius / 4
 let balls = []
 
+
+//PowerUp
+let powerups = []
+function PowerUp(x,y,id,img){
+this.x = x
+this.y = y
+this.id = id
+this.img = img
+
+//Math.floor(Math.random()*4);
+
+
+switch(this.id){
+  case 1:
+    this.img.src = "images2/powerup1.png" 
+    
+    break;
+  case 2:
+    this.img.src = "images2/powerup2.png"
+    
+    break;
+  case 3:
+    this.img.src = "images2/powerup3.png" 
+    
+    break;
+  case 4:
+    this.img.src = "images2/powerup4.png" 
+    
+    break;
+  default:
+    console.log("Error 404: PowerUp not found")
+    break;
+}
+
+this.draw = function(){
+  ctx.drawImage(this.img,this.x,this.y,50,50)
+}
+this.update = function(){
+
+
+}
+
+
+}
+
+
+
 //Player object
 function Player(image, playerWidth, playerHeight, step, spriteLine) {
 
@@ -258,6 +305,10 @@ function Animate() {
 
   }
 
+  for (let i = 0; i < powerups.length; i++) {
+    powerups[i].draw()
+  
+  }
 
 
   for (let i = 0; i < harpoons.length; i++) {
@@ -283,6 +334,9 @@ function Animate() {
     balls[q].update()
 
     for (let j = 0; j < harpoons.length; j++) {
+
+
+
       if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().x
         && balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= harpoons[j].getCurrentPos().x1
         && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().y
@@ -302,7 +356,19 @@ function Animate() {
 
         }
 
+        //Random PowerUp with random change of drop
+
+      
+        let x = balls[q].getCurrentPos().x -25
+        let y = balls[q].getCurrentPos().y -25
+        let id = Math.floor(Math.random()*4)
+        let img = new Image()
+        powerups.push(new PowerUp(x, y, id, img))
+
       }
+
+      
+
 
     }
 
