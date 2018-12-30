@@ -70,9 +70,20 @@ this.update = function(){
 
   }
   this.y += this.cy
-  console.log(this.y + " and "+this.cy)
+  
 
 
+}
+this.getCurrentPos = function () {
+  let x = this.x
+  let y = this.y
+  let id = this.id
+  let powerupPos = {
+    x: x,
+    y: y,
+    id: id
+  }
+  return powerupPos
 }
 
 
@@ -320,7 +331,15 @@ function Animate() {
   }
   for (let i = 0; i < powerups.length; i++) {
     powerups[i].update()
-  
+    
+    if(powerups[i].getCurrentPos().x <= player1.getCurrentPos().x + playerWidth &&
+    powerups[i].getCurrentPos().x + 50 >= player1.getCurrentPos().x &&
+    powerups[i].getCurrentPos().y <= player1.getCurrentPos().y + playerHeight &&
+    powerups[i].getCurrentPos().y +50 >= player1.getCurrentPos().y 
+    ){
+      console.log("Powerup activate")
+
+    }
   }
 
 
