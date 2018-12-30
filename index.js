@@ -32,6 +32,7 @@ this.x = x
 this.y = y
 this.id = id
 this.img = img
+this.cy = 2
 
 //Math.floor(Math.random()*4);
 
@@ -62,6 +63,14 @@ this.draw = function(){
   ctx.drawImage(this.img,this.x,this.y,50,50)
 }
 this.update = function(){
+
+  if(this.y +50> canvas.height){
+    this.cy = 0
+    this.y = canvas.height - 50
+
+  }
+  this.y += this.cy
+  console.log(this.y + " and "+this.cy)
 
 
 }
@@ -105,7 +114,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
       if (this.right) {
         this.spriteLine = 0
         this.step = this.step + 20
-        console.log(this.step)
+        
         if (this.step > canvas.width - this.playerWidth) {
           this.step = canvas.width - this.playerWidth - 1
         }
@@ -148,7 +157,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
       this.spriteLine = 110
       this.stepUpDown = this.stepUpDown + 10
       ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y - this.stepUpDown, this.playerWidth, this.playerHeight)
-      //console.log(this.stepUpDown)
+      
     }
 
     if (this.stepUpDown <= 10) {
@@ -309,6 +318,10 @@ function Animate() {
     powerups[i].draw()
   
   }
+  for (let i = 0; i < powerups.length; i++) {
+    powerups[i].update()
+  
+  }
 
 
   for (let i = 0; i < harpoons.length; i++) {
@@ -361,7 +374,7 @@ function Animate() {
       
         let x = balls[q].getCurrentPos().x -25
         let y = balls[q].getCurrentPos().y -25
-        let id = Math.floor(Math.random()*4)
+        let id = Math.floor(Math.random()*4)+1
         let img = new Image()
         powerups.push(new PowerUp(x, y, id, img))
 
@@ -416,7 +429,7 @@ function divideBall(x, y, r) {
     let vx = velIn * Math.cos(ang * Math.PI / 180)
     let vy = velIn * Math.sin(ang * Math.PI / 180)
     let speed = 0.1
-    console.log(vy)
+    
 
     balls.push(new Ball(x, y, vx, vy - 5, r / 2, speed, velIn, ang))//We need to check out why this works
     flag++
