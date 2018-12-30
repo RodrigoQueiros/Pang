@@ -12,6 +12,7 @@ let up = false
 let down = false
 let space = false
 let lives = 3
+let startGame = false
 
 
 //Harpoon
@@ -91,7 +92,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
     }
 
     //This will serve for the sprite come down
-    if (!(this.up)) { 
+    if (!(this.up)) {
       this.spriteLine = 110
       this.stepUpDown = this.stepUpDown - 10
       ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y - this.stepUpDown, this.playerWidth, this.playerHeight)
@@ -219,11 +220,9 @@ window.onload = function () {
   let vy = velIn * Math.sin(ang * Math.PI / 180)
   balls.push(new Ball(x, y, vx, vy, radius, speed, velIn, ang))
 
-  window.setInterval(Animate, 1000 / 60)
+  menu()
 
 }
-
-
 
 function Animate() {
 
@@ -370,6 +369,24 @@ function divideBall(x, y, r) {
 
 }
 
+function menu() {
+  //Menu
+  ctx.rect(0, 0, canvas.width, canvas.height)
+  ctx.fill()
+  let img = new Image() 
+  img.src = "images2/pang.png" //https://i.imgur.com/7Gc8NXt.png
+  img.addEventListener("load", function () {
+    ctx.drawImage(img, 300, 0, 400, 200)
+  })
+  
+  ctx.font = "50px Arial"
+  ctx.fillStyle = "white"
+  let text = "Start Game"
+  let textWidth = ctx.measureText(text).width
+  console.log(textWidth)
+  ctx.fillText(text, (canvas.width/2)-(textWidth/2) , 300)
+}
+
 // Key press and Key Up - eventListener
 function keyDown(e) {
   switch (e.keyCode) {
@@ -420,10 +437,30 @@ function keySpaceBarHandler(e) {
 
 }
 
+/*function keyEnterHandler(e) {
+  if (e.keyCode == 13) {
+    startGame = true
+    console.log(startGame)
+    window.setInterval(Animate, 1000 / 60)
+  }
+}*/
+
+function myFunction(e) {
+  let mouseX = e.pageX - canvas.offsetLeft
+  let mouseY = e.pageY - canvas.offsetTop
+  if (mouseY < 300  && mouseY > 300 - 40 && mouseX < (canvas.width/2) - (255.6396484375/2) + 255.6396484375 && mouseX > (canvas.width/2) - (255.6396484375/2)) { //textheight=40, textwidth = 255.6396484375
+    console.log("ola")
+    window.setInterval(Animate, 1000 / 60)
+  }
+  
+}
+
+window.addEventListener('click', myFunction); 
 
 window.addEventListener("keydown", keyDown)
 window.addEventListener("keyup", keyUp)
 window.addEventListener("keypress", keySpaceBarHandler)
+//window.addEventListener("keypress", keyEnterHandler)
 
 
 
