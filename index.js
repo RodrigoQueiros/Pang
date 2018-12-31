@@ -12,8 +12,9 @@ let up = false
 let down = false
 let space = false
 let lives = 5
-let startGame = false
-
+let startGame = true
+let gameOverBool = false
+let animation = null
 
 //Harpoon
 let harpoons = []
@@ -479,7 +480,8 @@ function Animate() {
 
       if (lives == 0) {
         console.log("game you over")
-
+        gameOverBool = true
+        gameOver()
       }
 
 
@@ -496,8 +498,11 @@ function Animate() {
 
   //window.requestAnimationFrame(Animate)
   //Draw lives
-  ctx.font = "16px Arial"
-  ctx.fillText("lives: " + lives, 8, 20)
+  if (startGame) {
+    ctx.font = "16px Arial"
+    ctx.fillText("lives: " + lives, 8, 20)
+  }
+
   switch(lives){
     case 0:
     let a = new Image()
@@ -575,6 +580,21 @@ function menu() {
   ctx.fillText(text, (canvas.width/2)-(textWidth/2) , 300)
 }
 
+function gameOver() {
+  startGame = false
+  clearInterval(animation)
+  ctx.fillStyle = "black"
+  ctx.rect(0, 0, canvas.width, canvas.height)
+  ctx.fill()
+  ctx.font = "60px Arial"
+  ctx.fillStyle = "white"
+  let text = "Game Over"
+  let textWidth = ctx.measureText(text).width
+  console.log(textWidth)
+  ctx.fillText(text, (canvas.width/2)-(textWidth/2) , 200)
+
+}
+
 // Key press and Key Up - eventListener
 function keyDown(e) {
   switch (e.keyCode) {
@@ -636,11 +656,21 @@ function keySpaceBarHandler(e) {
 function myFunction(e) {
   let mouseX = e.pageX - canvas.offsetLeft
   let mouseY = e.pageY - canvas.offsetTop
-  if (mouseY < 300  && mouseY > 300 - 40 && mouseX < (canvas.width/2) - (255.6396484375/2) + 255.6396484375 && mouseX > (canvas.width/2) - (255.6396484375/2)) { //textheight=40, textwidth = 255.6396484375
-    console.log("ola")
-    window.setInterval(Animate, 1000 / 60)
+  if (startGame == true) {
+    
+    if (mouseY < 300  && mouseY > 300 - 40 && mouseX < (canvas.width/2) - (255.6396484375/2) + 255.6396484375 && mouseX > (canvas.width/2) - (255.6396484375/2)) { //textheight=40, textwidth = 255.6396484375
+      console.log("ola")
+      console.log(gameOverBool)
+    
+      startAnimation()
+    }
   }
   
+}
+
+function startAnimation() {
+  animation = window.setInterval(Animate, 1000 / 60)
+  return animation
 }
 
 window.addEventListener('click', myFunction); 
