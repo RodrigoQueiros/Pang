@@ -28,6 +28,10 @@ let balls = []
 
 //PowerUp
 let powerups = []
+let powerup1 = false
+let powerup2 = false
+let powerup3 = false
+let timesUp = false
 function PowerUp(x,y,id,img){
 this.x = x
 this.y = y
@@ -223,6 +227,10 @@ function Ball(x, y, vx, vy, radius, speed, velIn, ang) {
   this.speed = speed
   this.velIn = velIn
   this.ang = ang
+  this.tempvx = 0
+  this.tempvy = 0
+
+
 
   this.draw = function () {
     ctx.beginPath();
@@ -232,6 +240,26 @@ function Ball(x, y, vx, vy, radius, speed, velIn, ang) {
   }
 
   this.update = function () {
+    //Freeze power up
+    if(powerup3==true){
+      if (this.tempvx == 0 && this.tempvy == 0){
+        this.tempvx = this.vx //Save vx and vy
+        this.tempvy = this.vy
+        this.vx = 0
+        this.vy = 0
+        //Need to stop gravity
+
+      }    
+    }
+    else if(powerup3==false){
+      if(this.vx == 0 && this.vy == 0){
+        this.vx = this.tempvx //Recover moviment
+        this.vy = this.tempvy
+        this.tempvx = 0
+        this.tempvy = 0
+      }
+
+    }
 
     this.x += this.vx
     this.y += this.vy
@@ -275,14 +303,21 @@ let step = 0
 let spriteLine = 0
 let player1 = new Player(new Image(), playerWidth, playerHeight, step, spriteLine);
 
+
+
 function powerupActivate(i){
 
   switch(powerups[i].getCurrentPos().id){
     case 1: //Harpon stick on top
+      powerup1 = true
       break;
     case 2: //Harpon unlimited
+      powerup2 = true
+      maxHarpoons = 20
+      // times up maxharpoons = 1
       break;
     case 3: //Freeze
+      powerup3 = true
       break;
     case 4: 
         if(lives<5){lives+=1}
@@ -313,7 +348,7 @@ window.onload = function () {
 function Animate() {
 
 
-  //Draw player
+  // player
   player1.draw();
 
   //ListenEvent and Draw player mov
@@ -372,8 +407,15 @@ function Animate() {
 
   for (let j = 0; j < harpoons.length; j++) {
 
-    if (harpoons[j].y - harpoons[j].increment < 10) {
-      harpoons.splice(j, 1)
+    if(powerup1==true){
+
+      //Nothig? xD
+    }
+    else if(powerup1==false){
+
+      if (harpoons[j].y - harpoons[j].increment < 10) {
+        harpoons.splice(j, 1)
+      }
     }
   }
 
@@ -458,14 +500,26 @@ function Animate() {
   ctx.fillText("lives: " + lives, 8, 20)
   switch(lives){
     case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
     let a = new Image()
-    a.src = "images2/live5.png"
+    a.src = "images2/live0.png"
     ctx.drawImage(a,8,20,100,16)
+    case 1:
+    let b = new Image()
+    b.src = "images2/live1.png"
+    ctx.drawImage(b,8,20,100,16)
+    case 2:
+    let c = new Image()
+    c.src = "images2/live2.png"
+    ctx.drawImage(c,8,20,100,16)
+    case 3:
+    let d = new Image()
+    d.src = "images2/live3.png"
+    ctx.drawImage(d,8,20,100,16)
+    case 4:
+    let e = new Image()
+    e.src = "images2/live4.png"
+    ctx.drawImage(e,8,20,100,16)
+    //Nao muda para as outras, img parece que fica por icma
     break;
     default: console.log("Error on lives count") 
     break;
