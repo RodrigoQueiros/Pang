@@ -11,7 +11,7 @@ let left = false
 let up = false
 let down = false
 let space = false
-let lives = 3
+let lives = 5
 let startGame = false
 
 
@@ -275,6 +275,25 @@ let step = 0
 let spriteLine = 0
 let player1 = new Player(new Image(), playerWidth, playerHeight, step, spriteLine);
 
+function powerupActivate(i){
+
+  switch(powerups[i].getCurrentPos().id){
+    case 1: //Harpon stick on top
+      break;
+    case 2: //Harpon unlimited
+      break;
+    case 3: //Freeze
+      break;
+    case 4: 
+        if(lives<5){lives+=1}
+      break;
+    default: console.log("Error on power up power id detect")
+      break;
+
+  }
+  
+}
+
 window.onload = function () {
   //Falta ver altura max e relacionar com raio e vy
   let x = 100
@@ -337,6 +356,9 @@ function Animate() {
     powerups[i].getCurrentPos().y +50 >= player1.getCurrentPos().y 
     ){
       console.log("Powerup activate")
+      powerupActivate(i)
+      powerups.splice(i, 1)
+
 
     }
   }
