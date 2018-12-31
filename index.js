@@ -456,6 +456,20 @@ function Animate() {
   //Draw lives
   ctx.font = "16px Arial"
   ctx.fillText("lives: " + lives, 8, 20)
+  switch(lives){
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    let a = new Image()
+    a.src = "images2/live5.png"
+    ctx.drawImage(a,8,20,100,16)
+    break;
+    default: console.log("Error on lives count") 
+    break;
+  }
 }
 
 function divideBall(x, y, r) {
