@@ -341,14 +341,14 @@ window.onload = function () {
   let vx = velIn * Math.cos(ang * Math.PI / 180)
   let vy = velIn * Math.sin(ang * Math.PI / 180)
   balls.push(new Ball(x, y, vx, vy, radius, speed, velIn, ang))
-
+  
   menu()
 
 }
 
 function Animate() {
 
-
+  
   // player
   player1.draw();
 
@@ -489,7 +489,11 @@ function Animate() {
 
 
   }
-
+  //ver posicao no codigo
+  if (balls.length == 0) {
+    console.log("game won")
+    gameWon()
+  }
   //Update sprite location
   currentFrame++
   if (currentFrame >= 6) {
@@ -589,6 +593,21 @@ function gameOver() {
   ctx.font = "60px Arial"
   ctx.fillStyle = "white"
   let text = "Game Over"
+  let textWidth = ctx.measureText(text).width
+  console.log(textWidth)
+  ctx.fillText(text, (canvas.width/2)-(textWidth/2) , 200)
+
+}
+
+function gameWon() {
+  startGame = false
+  clearInterval(animation)
+  ctx.fillStyle = "black"
+  ctx.rect(0, 0, canvas.width, canvas.height)
+  ctx.fill()
+  ctx.font = "60px Arial"
+  ctx.fillStyle = "white"
+  let text = "Game Won"
   let textWidth = ctx.measureText(text).width
   console.log(textWidth)
   ctx.fillText(text, (canvas.width/2)-(textWidth/2) , 200)
