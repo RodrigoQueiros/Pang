@@ -33,64 +33,64 @@ let powerup1 = false
 let powerup2 = false
 let powerup3 = false
 let timesUp = false
-function PowerUp(x,y,id,img){
-this.x = x
-this.y = y
-this.id = id
-this.img = img
-this.cy = 2
+function PowerUp(x, y, id, img) {
+  this.x = x
+  this.y = y
+  this.id = id
+  this.img = img
+  this.cy = 2
 
-//Math.floor(Math.random()*4);
+  //Math.floor(Math.random()*4);
 
 
-switch(this.id){
-  case 1:
-    this.img.src = "images2/powerup1.png" 
-    
-    break;
-  case 2:
-    this.img.src = "images2/powerup2.png"
-    
-    break;
-  case 3:
-    this.img.src = "images2/powerup3.png" 
-    
-    break;
-  case 4:
-    this.img.src = "images2/powerup4.png" 
-    
-    break;
-  default:
-    console.log("Error 404: PowerUp not found")
-    break;
-}
+  switch (this.id) {
+    case 1:
+      this.img.src = "images2/powerup1.png"
 
-this.draw = function(){
-  ctx.drawImage(this.img,this.x,this.y,50,50)
-}
-this.update = function(){
+      break;
+    case 2:
+      this.img.src = "images2/powerup2.png"
 
-  if(this.y +50> canvas.height){
-    this.cy = 0
-    this.y = canvas.height - 50
+      break;
+    case 3:
+      this.img.src = "images2/powerup3.png"
+
+      break;
+    case 4:
+      this.img.src = "images2/powerup4.png"
+
+      break;
+    default:
+      console.log("Error 404: PowerUp not found")
+      break;
+  }
+
+  this.draw = function () {
+    ctx.drawImage(this.img, this.x, this.y, 50, 50)
+  }
+  this.update = function () {
+
+    if (this.y + 50 > canvas.height) {
+      this.cy = 0
+      this.y = canvas.height - 50
+
+    }
+    this.y += this.cy
+
+
 
   }
-  this.y += this.cy
-  
-
-
-}
-this.getCurrentPos = function () {
-  let x = this.x
-  let y = this.y
-  let id = this.id
-  let powerupPos = {
-    x: x,
-    y: y,
-    id: id
+  this.getCurrentPos = function () {
+    let x = this.x
+    let y = this.y
+    let id = this.id
+    let powerupPos = {
+      x: x,
+      y: y,
+      id: id
+    }
+    return powerupPos
   }
-  return powerupPos
-}
 
 
 }
@@ -131,7 +131,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
       if (this.right) {
         this.spriteLine = 0
         this.step = this.step + 20
-        
+
         if (this.step > canvas.width - this.playerWidth) {
           this.step = canvas.width - this.playerWidth - 1
         }
@@ -174,7 +174,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
       this.spriteLine = 110
       this.stepUpDown = this.stepUpDown + 10
       ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y - this.stepUpDown, this.playerWidth, this.playerHeight)
-      
+
     }
 
     if (this.stepUpDown <= 10) {
@@ -242,18 +242,20 @@ function Ball(x, y, vx, vy, radius, speed, velIn, ang) {
 
   this.update = function () {
     //Freeze power up
-    if(powerup3==true){
-      if (this.tempvx == 0 && this.tempvy == 0){
+    if (powerup3 == true) {
+      if (this.tempvx == 0 && this.tempvy == 0) {
         this.tempvx = this.vx //Save vx and vy
         this.tempvy = this.vy
         this.vx = 0
         this.vy = 0
+        console.log("vx: "+this.vx)
+        console.log("vy: "+this.vy)
         //Need to stop gravity
 
-      }    
+      }
     }
-    else if(powerup3==false){
-      if(this.vx == 0 && this.vy == 0){
+    else if (powerup3 == false) {
+      if (this.vx == 0 && this.vy == 0) {
         this.vx = this.tempvx //Recover moviment
         this.vy = this.tempvy
         this.tempvx = 0
@@ -306,9 +308,9 @@ let player1 = new Player(new Image(), playerWidth, playerHeight, step, spriteLin
 
 
 
-function powerupActivate(i){
+function powerupActivate(i) {
 
-  switch(powerups[i].getCurrentPos().id){
+  switch (powerups[i].getCurrentPos().id) {
     case 1: //Harpon stick on top
       powerup1 = true
       break;
@@ -320,14 +322,14 @@ function powerupActivate(i){
     case 3: //Freeze
       powerup3 = true
       break;
-    case 4: 
-        if(lives<5){lives+=1}
+    case 4:
+      if (lives < 5) { lives += 1 }
       break;
     default: console.log("Error on power up power id detect")
       break;
 
   }
-  
+
 }
 
 window.onload = function () {
@@ -341,7 +343,7 @@ window.onload = function () {
   let vx = velIn * Math.cos(ang * Math.PI / 180)
   let vy = velIn * Math.sin(ang * Math.PI / 180)
   balls.push(new Ball(x, y, vx, vy, radius, speed, velIn, ang))
-  
+
   menu()
 
 }
@@ -381,16 +383,16 @@ function Animate() {
 
   for (let i = 0; i < powerups.length; i++) {
     powerups[i].draw()
-  
+
   }
   for (let i = 0; i < powerups.length; i++) {
     powerups[i].update()
-    
-    if(powerups[i].getCurrentPos().x <= player1.getCurrentPos().x + playerWidth &&
-    powerups[i].getCurrentPos().x + 50 >= player1.getCurrentPos().x &&
-    powerups[i].getCurrentPos().y <= player1.getCurrentPos().y + playerHeight &&
-    powerups[i].getCurrentPos().y +50 >= player1.getCurrentPos().y 
-    ){
+
+    if (powerups[i].getCurrentPos().x <= player1.getCurrentPos().x + playerWidth &&
+      powerups[i].getCurrentPos().x + 50 >= player1.getCurrentPos().x &&
+      powerups[i].getCurrentPos().y <= player1.getCurrentPos().y + playerHeight &&
+      powerups[i].getCurrentPos().y + 50 >= player1.getCurrentPos().y
+    ) {
       console.log("Powerup activate")
       powerupActivate(i)
       powerups.splice(i, 1)
@@ -408,11 +410,11 @@ function Animate() {
 
   for (let j = 0; j < harpoons.length; j++) {
 
-    if(powerup1==true){
+    if (powerup1 == true) {
 
       //Nothig? xD
     }
-    else if(powerup1==false){
+    else if (powerup1 == false) {
 
       if (harpoons[j].y - harpoons[j].increment < 10) {
         harpoons.splice(j, 1)
@@ -454,16 +456,16 @@ function Animate() {
 
         //Random PowerUp with random change of drop
 
-      
-        let x = balls[q].getCurrentPos().x -25
-        let y = balls[q].getCurrentPos().y -25
-        let id = Math.floor(Math.random()*4)+1
+
+        let x = balls[q].getCurrentPos().x - 25
+        let y = balls[q].getCurrentPos().y - 25
+        let id = Math.floor(Math.random() * 4) + 1
         let img = new Image()
         powerups.push(new PowerUp(x, y, id, img))
 
       }
 
-      
+
 
 
     }
@@ -502,36 +504,46 @@ function Animate() {
 
   //window.requestAnimationFrame(Animate)
   //Draw lives
-  if (startGame) {
-    ctx.font = "16px Arial"
-    ctx.fillText("lives: " + lives, 8, 20)
-  }
+  // if (startGame) {
+  //   ctx.font = "16px Arial"
+  //   ctx.fillText("lives: " + lives, 8, 20)
+  // }
 
-  switch(lives){
-    case 0:
-    let a = new Image()
-    a.src = "images2/live0.png"
-    ctx.drawImage(a,8,20,100,16)
-    case 1:
-    let b = new Image()
-    b.src = "images2/live1.png"
-    ctx.drawImage(b,8,20,100,16)
-    case 2:
-    let c = new Image()
-    c.src = "images2/live2.png"
-    ctx.drawImage(c,8,20,100,16)
-    case 3:
-    let d = new Image()
-    d.src = "images2/live3.png"
-    ctx.drawImage(d,8,20,100,16)
-    case 4:
-    let e = new Image()
-    e.src = "images2/live4.png"
-    ctx.drawImage(e,8,20,100,16)
-    //Nao muda para as outras, img parece que fica por icma
-    break;
-    default: console.log("Error on lives count") 
-    break;
+  if (startGame) {
+    switch (lives) {
+      case 0:
+        let a = new Image()
+        a.src = "images2/live0.png"
+        ctx.drawImage(a, 8, 20, 100, 16)
+        break;
+      case 1:
+        let b = new Image()
+        b.src = "images2/live1.png"
+        ctx.drawImage(b, 8, 20, 100, 16)
+        break;
+      case 2:
+        let c = new Image()
+        c.src = "images2/live2.png"
+        ctx.drawImage(c, 8, 20, 100, 16)
+        break;
+      case 3:
+        let d = new Image()
+        d.src = "images2/live3.png"
+        ctx.drawImage(d, 8, 20, 100, 16)
+        break;
+      case 4:
+        let e = new Image()
+        e.src = "images2/live4.png"
+        ctx.drawImage(e, 8, 20, 100, 16)
+        break;
+      case 5:
+        let f = new Image()
+        f.src = "images2/live5.png"
+        ctx.drawImage(f, 8, 20, 100, 16)
+        break;
+      default: console.log("Error on lives count")
+        break;
+    }
   }
 }
 
@@ -546,7 +558,7 @@ function divideBall(x, y, r) {
     let vx = velIn * Math.cos(ang * Math.PI / 180)
     let vy = velIn * Math.sin(ang * Math.PI / 180)
     let speed = 0.1
-    
+
 
     balls.push(new Ball(x, y, vx, vy - 5, r / 2, speed, velIn, ang))//We need to check out why this works
     flag++
@@ -570,18 +582,18 @@ function menu() {
   //Menu
   ctx.rect(0, 0, canvas.width, canvas.height)
   ctx.fill()
-  let img = new Image() 
+  let img = new Image()
   img.src = "images2/pang.png" //https://i.imgur.com/7Gc8NXt.png
   img.addEventListener("load", function () {
     ctx.drawImage(img, 300, 0, 400, 200)
   })
-  
+
   ctx.font = "50px Arial"
   ctx.fillStyle = "white"
   let text = "Start Game"
   let textWidth = ctx.measureText(text).width
   console.log(textWidth)
-  ctx.fillText(text, (canvas.width/2)-(textWidth/2) , 300)
+  ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 300)
 }
 
 function gameOver() {
@@ -595,7 +607,7 @@ function gameOver() {
   let text = "Game Over"
   let textWidth = ctx.measureText(text).width
   console.log(textWidth)
-  ctx.fillText(text, (canvas.width/2)-(textWidth/2) , 200)
+  ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 200)
 
 }
 
@@ -610,7 +622,7 @@ function gameWon() {
   let text = "Game Won"
   let textWidth = ctx.measureText(text).width
   console.log(textWidth)
-  ctx.fillText(text, (canvas.width/2)-(textWidth/2) , 200)
+  ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 200)
 
 }
 
@@ -676,15 +688,15 @@ function myFunction(e) {
   let mouseX = e.pageX - canvas.offsetLeft
   let mouseY = e.pageY - canvas.offsetTop
   if (startGame == true) {
-    
-    if (mouseY < 300  && mouseY > 300 - 40 && mouseX < (canvas.width/2) - (255.6396484375/2) + 255.6396484375 && mouseX > (canvas.width/2) - (255.6396484375/2)) { //textheight=40, textwidth = 255.6396484375
+
+    if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (255.6396484375 / 2) + 255.6396484375 && mouseX > (canvas.width / 2) - (255.6396484375 / 2)) { //textheight=40, textwidth = 255.6396484375
       console.log("ola")
       console.log(gameOverBool)
-    
+
       startAnimation()
     }
   }
-  
+
 }
 
 function startAnimation() {
@@ -692,7 +704,7 @@ function startAnimation() {
   return animation
 }
 
-window.addEventListener('click', myFunction); 
+window.addEventListener('click', myFunction);
 
 window.addEventListener("keydown", keyDown)
 window.addEventListener("keyup", keyUp)
