@@ -18,7 +18,7 @@ let gameWonBool = false
 let animation = null
 let pause = false
 let animation2 = null
-let menuBool = false
+
 
 //Harpoon
 let harpoons = []
@@ -526,7 +526,7 @@ function divideBall(x, y, r) {
 
 function menu() {
   //Menu
-  menuBool = false
+  ctx.fillStyle = "black"
   ctx.rect(0, 0, canvas.width, canvas.height)
   ctx.fill()
   let img = new Image()
@@ -541,6 +541,38 @@ function menu() {
   let textWidth = ctx.measureText(text).width
   console.log(textWidth)
   ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 300)
+
+  ctx.font = "50px Arial"
+  ctx.fillStyle = "white"
+  let text2 = "Controls"
+  let textWidth2 = ctx.measureText(text2).width
+  console.log(textWidth2)
+  ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 400)  
+}
+
+function Controls() {
+  ctx.fillStyle = "black"
+  ctx.rect(0, 0, canvas.width, canvas.height)
+  ctx.fill()
+
+  ctx.font = "50px Arial"
+  ctx.fillStyle = "white"
+  let text = "Controls"
+  let textWidth = ctx.measureText(text).width
+  ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 100)
+
+  let img = new Image()
+  img.src = "images2/controls.png" 
+  img.addEventListener("load", function () {
+    ctx.drawImage(img, 300, 150)
+  })
+
+  ctx.font = "25px Arial"
+  ctx.fillStyle = "white"
+  let text2 = "Back"
+  let textWidth2 = ctx.measureText(text2).width
+  console.log("baclk:"+textWidth2)
+  ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 500)
 }
 
 function gameOver() {
@@ -667,8 +699,17 @@ function myFunction(e) {
       x = true
       startGame = false
     }
+    if (mouseY < 400 && mouseY > 400 - 40 && mouseX < (canvas.width / 2) - (186.181640625 / 2) + 186.181640625 && mouseX > (canvas.width / 2) - (186.181640625 / 2)) { //textheight=40, textwidth = 255.6396484375
+      Controls()
+      
+    }
+    if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight=40, textwidth = 255.6396484375
+      menu()
+    }
   }
 }
+
+
 
 function startAnimation() {
   animation = window.setInterval(Animate, 1000 / 60)
