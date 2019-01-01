@@ -18,6 +18,7 @@ let gameWonBool = false
 let animation = null
 let pause = false
 let animation2 = null
+let controlsBool = false
 
 //Harpoon
 let harpoons = []
@@ -520,6 +521,7 @@ function divideBall(x, y, r) {
 
 function menu() {
   //Menu
+  controlsBool = false
   ctx.fillStyle = "black"
   ctx.rect(0, 0, canvas.width, canvas.height)
   ctx.fill()
@@ -545,6 +547,7 @@ function menu() {
 }
 
 function Controls() {
+  controlsBool = true
   ctx.fillStyle = "black"
   ctx.rect(0, 0, canvas.width, canvas.height)
   ctx.fill()
@@ -698,10 +701,13 @@ function mouseFunction(e) {
   let mouseX = e.pageX - canvas.offsetLeft
   let mouseY = e.pageY - canvas.offsetTop
   if (startGame == true) {
-    if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (255.6396484375 / 2) + 255.6396484375 && mouseX > (canvas.width / 2) - (255.6396484375 / 2)) { //textheight = 40, textwidth = 255.6396484375
-      startAnimation()
-      startGame = false
+    if (controlsBool == false) {
+      if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (255.6396484375 / 2) + 255.6396484375 && mouseX > (canvas.width / 2) - (255.6396484375 / 2)) { //textheight = 40, textwidth = 255.6396484375
+        startAnimation()
+        startGame = false
+      }
     }
+    
     if (mouseY < 400 && mouseY > 400 - 40 && mouseX < (canvas.width / 2) - (186.181640625 / 2) + 186.181640625 && mouseX > (canvas.width / 2) - (186.181640625 / 2)) { //textheight = 40, textwidth = 186.181640625
       Controls()
     }
