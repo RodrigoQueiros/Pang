@@ -15,6 +15,8 @@ let lives = 5
 let startGame = true
 let gameOverBool = false
 let animation = null
+let pause = false
+let countPause = 1
 
 //Harpoon
 let harpoons = []
@@ -496,6 +498,16 @@ function Animate() {
     console.log("game won")
     gameWon()
   }
+
+  if (pause) {
+    console.log("pause")
+    clearInterval(animation)
+  }
+  else if (pause == false && countPause != 1) {
+    console.log("startagain")
+    startAnimation()
+  }
+
   //Update sprite location
   currentFrame++
   if (currentFrame >= 6) {
@@ -676,13 +688,21 @@ function keySpaceBarHandler(e) {
 
 }
 
-/*function keyEnterHandler(e) {
+function keyEnterHandler(e) {
   if (e.keyCode == 13) {
-    startGame = true
-    console.log(startGame)
-    window.setInterval(Animate, 1000 / 60)
+    countPause++
+    if (countPause % 2 == 0) {
+      pause = true
+    }
+    else {
+      pause = false
+    }
+    
+    console.log(pause)
+    console.log(countPause)
+    
   }
-}*/
+}
 
 function myFunction(e) {
   let mouseX = e.pageX - canvas.offsetLeft
@@ -709,7 +729,7 @@ window.addEventListener('click', myFunction);
 window.addEventListener("keydown", keyDown)
 window.addEventListener("keyup", keyUp)
 window.addEventListener("keypress", keySpaceBarHandler)
-//window.addEventListener("keypress", keyEnterHandler)
+window.addEventListener("keypress", keyEnterHandler)
 
 
 
