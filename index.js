@@ -19,7 +19,6 @@ let animation = null
 let pause = false
 let animation2 = null
 
-
 //Harpoon
 let harpoons = []
 let maxHarpoons = 1 //For powerUps
@@ -245,7 +244,6 @@ function Ball(x, y, vx, vy, radius, speed, velIn, ang) {
         this.tempvx = 0
         this.tempvy = 0
       }
-
     }
 
     this.x += this.vx
@@ -414,9 +412,6 @@ function Animate() {
 
       }
 
-
-
-
     }
 
     if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= player1.getCurrentPos().x
@@ -434,7 +429,6 @@ function Animate() {
         gameOver()
       }
     }
-
 
   }
   //ver posicao no codigo
@@ -585,8 +579,14 @@ function gameOver() {
   ctx.fillStyle = "white"
   let text = "Game Over"
   let textWidth = ctx.measureText(text).width
-  console.log(textWidth)
   ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 200)
+
+  ctx.font = "50px Arial"
+  ctx.fillStyle = "white"
+  let text2 = "Try Again"
+  let textWidth2 = ctx.measureText(text2).width
+  console.log("tryagain: "+textWidth2)
+  ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 300)
 
 }
 
@@ -620,6 +620,13 @@ function gameWon() {
   console.log(textWidth)
   ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 200)
 
+  ctx.font = "50px Arial"
+  ctx.fillStyle = "white"
+  let text2 = "Try Again"
+  let textWidth2 = ctx.measureText(text2).width
+  console.log("tryagain: "+textWidth2)
+  ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 300)
+
 }
 
 // Key press and Key Up - eventListener
@@ -637,7 +644,6 @@ function keyDown(e) {
     case 40:
       down = true
       break;
-
   }
 }
 
@@ -688,28 +694,29 @@ function keyEnterHandler(e) {
   }
 }
 
-function myFunction(e) {
+function mouseFunction(e) {
   let mouseX = e.pageX - canvas.offsetLeft
   let mouseY = e.pageY - canvas.offsetTop
   if (startGame == true) {
-    if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (255.6396484375 / 2) + 255.6396484375 && mouseX > (canvas.width / 2) - (255.6396484375 / 2)) { //textheight=40, textwidth = 255.6396484375
-      console.log("ola")
-      console.log(gameOverBool)
+    if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (255.6396484375 / 2) + 255.6396484375 && mouseX > (canvas.width / 2) - (255.6396484375 / 2)) { //textheight = 40, textwidth = 255.6396484375
       startAnimation()
-      x = true
       startGame = false
     }
-    if (mouseY < 400 && mouseY > 400 - 40 && mouseX < (canvas.width / 2) - (186.181640625 / 2) + 186.181640625 && mouseX > (canvas.width / 2) - (186.181640625 / 2)) { //textheight=40, textwidth = 255.6396484375
+    if (mouseY < 400 && mouseY > 400 - 40 && mouseX < (canvas.width / 2) - (186.181640625 / 2) + 186.181640625 && mouseX > (canvas.width / 2) - (186.181640625 / 2)) { //textheight = 40, textwidth = 186.181640625
       Controls()
-      
     }
-    if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight=40, textwidth = 255.6396484375
+    if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
       menu()
     }
   }
+  else {
+    if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (212.109375 / 2) + 212.109375 && mouseX > (canvas.width / 2) - (212.109375 / 2)) { //textheight = 20, textwidth = 212.109375
+      if (gameOverBool == true || gameWonBool == true) {
+        location.reload()
+      }
+    }
+  }
 }
-
-
 
 function startAnimation() {
   animation = window.setInterval(Animate, 1000 / 60)
@@ -721,7 +728,7 @@ function startAnimation2() {
   return animation2
 }
 
-window.addEventListener('click', myFunction);
+window.addEventListener('click', mouseFunction);
 
 window.addEventListener("keydown", keyDown)
 window.addEventListener("keyup", keyUp)
