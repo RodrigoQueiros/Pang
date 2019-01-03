@@ -227,7 +227,7 @@ function Ball(x, y, vx, vy, radius, speed, velIn, ang) {
 
   this.update = function () {
     //Freeze power up
-    if (powerup3 == true) {
+    /*if (powerup3 == true) {
       if (this.tempvx == 0 && this.tempvy == 0) {
         this.tempvx = this.vx //Save vx and vy
         this.tempvy = this.vy
@@ -245,11 +245,11 @@ function Ball(x, y, vx, vy, radius, speed, velIn, ang) {
         this.tempvx = 0
         this.tempvy = 0
       }
-    }
+    }*/
 
     this.x += this.vx
     this.y += this.vy
-
+    console.log("vy: " + this.vy)
     if (this.y + this.radius >= canvas.height) {
       this.vy = -this.vy
       //this.y = canvas.height- this.radius
@@ -294,7 +294,7 @@ function powerupActivate(i) {
       break;
     case 2: //Harpon unlimited
       powerup2 = true
-      maxHarpoons = 20
+      maxHarpoons = 5
       // times up maxharpoons = 1
       break;
     case 3: //Freeze
@@ -387,7 +387,8 @@ function Animate() {
   }
 
   for (let q = 0; q < balls.length; q++) {
-    balls[q].update()
+    //Freeze
+    if(powerup3==false){balls[q].update()}
     for (let j = 0; j < harpoons.length; j++) {
 
       if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().x
