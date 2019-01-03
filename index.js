@@ -36,10 +36,6 @@ let powerup2 = false
 let powerup3 = false
 let timesUp = false
 
-//Platforms
-let platforms = []
-
-
 function PowerUp(x, y, id, img) {
   this.x = x
   this.y = y
@@ -121,7 +117,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
   this.image.src = "images2/gb_walk.png"
 
   this.ground = canvas.height
-  this.onPlatform = false
+  //this.onPlatform = false
 
   //Draw player 
   this.draw = function () {
@@ -151,35 +147,39 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
           this.step = canvas.width - this.playerWidth - 1
         }
         //ctx.drawImage(this.image, this.currentFrame * this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
-        if (!this.onPlatform) { //onPlatform verifies if is in a platform
+        //if (!this.onPlatform) { //onPlatform verifies if is in a platform
           ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
-        }
-        
+        //}
+
       }
       else if (this.left) {
+
         this.spriteLine = 110
         this.step = this.step - 20
 
         if (this.step < 0) {
           this.step = 1
         }
-        if (!this.onPlatform) {
-        ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
-        }
+        //if (!this.onPlatform) {
+          ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+        //}
       }
-      else if (this.space) { //Precisamos pensar melhor na tecla espaço, estou a por true quando é up, e false a down, mas o harpão so lança a down
+      else if (this.space) {
         this.spriteLine = 440
         this.step = this.step
 
         ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y, this.playerWidth, this.playerHeight)
 
       }
+      /*
       else if (this.down) {
+
         this.spriteLine = 110
         this.stepUpDown = this.stepUpDown - 10
         ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y + this.stepUpDown, this.playerWidth, this.playerHeight)
       }
-      else if (this.nothing && !this.onPlatform) {
+      */
+      else if (this.nothing) {
         ctx.drawImage(this.image, this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
       }
     }
@@ -190,14 +190,13 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
       this.stepUpDown = this.stepUpDown - 10
       ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y - this.stepUpDown, this.playerWidth, this.playerHeight)
 
-      console.log(this.getCurrentPos().y - this.stepUpDown)
-
-      if (this.getCurrentPos().y - this.stepUpDown <= platform1.y) {
+      /*
+      if (this.getCurrentPos().y - this.stepUpDown <= platform1.y && (this.getCurrentPos().x <= platform1.x)) {
 
         this.ground = platform1.y - this.playerHeight
         this.onPlatform = true
 
-      }
+      }*/
 
     }
     if (this.up) {
@@ -214,7 +213,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
 
   this.getCurrentPos = function () {
     let x = this.step + (this.playerWidth / 2)
-    let y = this.ground
+    let y = this.ground //- this.stepUpDown
     let playerPos = {
       x: x,
       y: y
@@ -361,7 +360,7 @@ window.onload = function () {
   let vy = velIn * Math.sin(ang * Math.PI / 180)
 
   balls.push(new Ball(x, y, vx, vy, radius, speed, velIn, ang))
-  platform1 = (new Platform(500,300,500,50))
+  //platform1 = (new Platform(500, 300, 500, 50))
 
   menu()
 }
@@ -418,7 +417,7 @@ function Animate() {
   for (let j = 0; j < harpoons.length; j++) {
     if (powerup1 == true) {
       //If space splice 
-      if(space){harpoons.splice(j, 1)}
+      if (space) { harpoons.splice(j, 1) }
     }
     else if (powerup1 == false) {
       if (harpoons[j].y - harpoons[j].increment < 10) {
@@ -433,7 +432,7 @@ function Animate() {
 
   for (let q = 0; q < balls.length; q++) {
     //Freeze
-    if(powerup3==false){balls[q].update()}
+    if (powerup3 == false) { balls[q].update() }
     for (let j = 0; j < harpoons.length; j++) {
 
       if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().x
@@ -489,11 +488,11 @@ function Animate() {
   currentFrame++
   if (currentFrame >= 500) {
     currentFrame = 0
-    powerup3=false
+    powerup3 = false
   }
 
   //draw platform tests
-  platform1.draw()
+  //platform1.draw()
 
   //window.requestAnimationFrame(Animate)
   //Draw lives
@@ -594,7 +593,7 @@ function menu() {
   let text2 = "Controls"
   let textWidth2 = ctx.measureText(text2).width
   console.log(textWidth2)
-  ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 400)  
+  ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 400)
 }
 
 function Controls() {
@@ -610,7 +609,7 @@ function Controls() {
   ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 100)
 
   let img = new Image()
-  img.src = "images2/controls.png" 
+  img.src = "images2/controls.png"
   img.addEventListener("load", function () {
     ctx.drawImage(img, 300, 150)
   })
@@ -619,7 +618,7 @@ function Controls() {
   ctx.fillStyle = "white"
   let text2 = "Back"
   let textWidth2 = ctx.measureText(text2).width
-  console.log("baclk:"+textWidth2)
+  console.log("baclk:" + textWidth2)
   ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 500)
 }
 
@@ -639,7 +638,7 @@ function gameOver() {
   ctx.fillStyle = "white"
   let text2 = "Try Again"
   let textWidth2 = ctx.measureText(text2).width
-  console.log("tryagain: "+textWidth2)
+  console.log("tryagain: " + textWidth2)
   ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 300)
 
 }
@@ -678,7 +677,7 @@ function gameWon() {
   ctx.fillStyle = "white"
   let text2 = "Try Again"
   let textWidth2 = ctx.measureText(text2).width
-  console.log("tryagain: "+textWidth2)
+  console.log("tryagain: " + textWidth2)
   ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 300)
 
 }
@@ -758,7 +757,7 @@ function mouseFunction(e) {
         startGame = false
       }
     }
-    
+
     if (mouseY < 400 && mouseY > 400 - 40 && mouseX < (canvas.width / 2) - (186.181640625 / 2) + 186.181640625 && mouseX > (canvas.width / 2) - (186.181640625 / 2)) { //textheight = 40, textwidth = 186.181640625
       Controls()
     }
