@@ -444,7 +444,7 @@ function Animate() {
   //Update sprite location
   currentFrame++
   
-  if (currentFrame >= 300) {
+  if (currentFrame >= 500) {
     currentFrame = 0
     powerup3=false
   }
