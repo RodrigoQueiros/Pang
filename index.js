@@ -443,8 +443,10 @@ function Animate() {
 
   //Update sprite location
   currentFrame++
-  if (currentFrame >= 6) {
+  
+  if (currentFrame >= 300) {
     currentFrame = 0
+    powerup3=false
   }
 
   //window.requestAnimationFrame(Animate)
