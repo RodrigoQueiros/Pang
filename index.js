@@ -373,7 +373,8 @@ function Animate() {
 
   for (let j = 0; j < harpoons.length; j++) {
     if (powerup1 == true) {
-      //Nothig? xD
+      //If space splice 
+      if(space){harpoons.splice(j, 1)}
     }
     else if (powerup1 == false) {
       if (harpoons[j].y - harpoons[j].increment < 10) {
