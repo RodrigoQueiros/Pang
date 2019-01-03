@@ -35,6 +35,11 @@ let powerup1 = false
 let powerup2 = false
 let powerup3 = false
 let timesUp = false
+
+//Platforms
+let platforms = []
+
+
 function PowerUp(x, y, id, img) {
   this.x = x
   this.y = y
@@ -87,6 +92,23 @@ function PowerUp(x, y, id, img) {
 
 }
 
+//Platforms
+function Platform(x, y, width, height) {
+
+  this.x = x
+  this.y = y
+  this.width = width
+  this.height = height
+
+  this.draw = function () {
+
+    ctx.fillStyle = "blue"
+    ctx.fillRect(this.x, this.y, this.width, this.height)
+
+  }
+
+}
+
 //Player object
 function Player(image, playerWidth, playerHeight, step, spriteLine) {
 
@@ -97,6 +119,9 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
   this.stepUpDown = step
   this.spriteLine = spriteLine
   this.image.src = "images2/gb_walk.png"
+
+  this.ground = canvas.height
+  this.onPlatform = false
 
   //Draw player 
   this.draw = function () {
@@ -126,15 +151,21 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
           this.step = canvas.width - this.playerWidth - 1
         }
         //ctx.drawImage(this.image, this.currentFrame * this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
-        ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+        if (!this.onPlatform) { //onPlatform verifies if is in a platform
+          ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+        }
+        
       }
       else if (this.left) {
         this.spriteLine = 110
         this.step = this.step - 20
+
         if (this.step < 0) {
           this.step = 1
         }
+        if (!this.onPlatform) {
         ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+        }
       }
       else if (this.space) { //Precisamos pensar melhor na tecla espaço, estou a por true quando é up, e false a down, mas o harpão so lança a down
         this.spriteLine = 440
@@ -148,7 +179,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
         this.stepUpDown = this.stepUpDown - 10
         ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y + this.stepUpDown, this.playerWidth, this.playerHeight)
       }
-      else if (this.nothing) {
+      else if (this.nothing && !this.onPlatform) {
         ctx.drawImage(this.image, this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
       }
     }
@@ -158,6 +189,15 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
       this.spriteLine = 110
       this.stepUpDown = this.stepUpDown - 10
       ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y - this.stepUpDown, this.playerWidth, this.playerHeight)
+
+      console.log(this.getCurrentPos().y - this.stepUpDown)
+
+      if (this.getCurrentPos().y - this.stepUpDown <= platform1.y) {
+
+        this.ground = platform1.y - this.playerHeight
+        this.onPlatform = true
+
+      }
 
     }
     if (this.up) {
@@ -174,7 +214,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
 
   this.getCurrentPos = function () {
     let x = this.step + (this.playerWidth / 2)
-    let y = canvas.height
+    let y = this.ground
     let playerPos = {
       x: x,
       y: y
@@ -249,7 +289,7 @@ function Ball(x, y, vx, vy, radius, speed, velIn, ang) {
 
     this.x += this.vx
     this.y += this.vy
-    console.log("vy: " + this.vy)
+    //console.log("vy: " + this.vy)
     if (this.y + this.radius >= canvas.height) {
       this.vy = -this.vy
       //this.y = canvas.height- this.radius
@@ -309,6 +349,7 @@ function powerupActivate(i) {
 }
 
 window.onload = function () {
+
   //Falta ver altura max e relacionar com raio e vy
   let x = 100
   let y = 400
@@ -318,12 +359,15 @@ window.onload = function () {
   let ang = -85
   let vx = velIn * Math.cos(ang * Math.PI / 180)
   let vy = velIn * Math.sin(ang * Math.PI / 180)
+
   balls.push(new Ball(x, y, vx, vy, radius, speed, velIn, ang))
+  platform1 = (new Platform(500,300,500,50))
 
   menu()
 }
 
 function Animate() {
+
   // player
   player1.draw();
 
@@ -441,13 +485,15 @@ function Animate() {
     gameWon()
   }
 
-  //Update sprite location
+  //Update sprite location and stop PowerUpFreeze
   currentFrame++
-  
   if (currentFrame >= 500) {
     currentFrame = 0
     powerup3=false
   }
+
+  //draw platform tests
+  platform1.draw()
 
   //window.requestAnimationFrame(Animate)
   //Draw lives
@@ -524,6 +570,7 @@ function divideBall(x, y, r) {
 }
 
 function menu() {
+
   //Menu
   controlsBool = false
   ctx.fillStyle = "black"
