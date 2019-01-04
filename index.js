@@ -48,17 +48,22 @@ let levels = [{
   number: 1,
   ballsBig: 1,
   backgroundSrc: "images2/background.gif",
-  platforms: [],
+  platforms: [{
+    x: 200,
+    y: 200,
+    w: 200,
+    h: 50
+  }],
 },
 {
   number: 2,
   ballsBig: 2,
   backgroundSrc: "images2/background2.gif",
   platforms: [{
-    x: 500,
-    y: 500,
-    w: 500,
-    h: 100
+    x: 200,
+    y: 200,
+    w: 200,
+    h: 50
   }]
 }]
 
@@ -510,8 +515,10 @@ function Animate() {
         ) {
           balls[q].vy = -balls[q].vy
         }
+        //Side hit
         if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= platforms[j].x
-          && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= platforms[j].y
+          && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r <= platforms[j].y
+          
         ) {
           balls[q].vx = -balls[q].vx
         }
