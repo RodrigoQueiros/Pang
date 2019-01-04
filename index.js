@@ -405,7 +405,7 @@ function Animate() {
         //This will insert all the data into the level
         for (let j = levels[i].ballsBig; j > 0; j--) {
 
-          let x = j * 100
+          let x = (j) * 200
           let y = 400
           let radius = 60
           let speed = 0.1
@@ -512,18 +512,38 @@ function Animate() {
       balls[q].update()
 
       for (let j = 0; j < platforms.length; j++) {
-        //Collision with platforms
-        if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= platforms[j].x
-          && balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= platforms[j].x + platforms[j].width
-          && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= platforms[j].y
-          && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height
-        ) {
-          balls[q].vy = -balls[q].vy
+
+        //Down Collision
+        if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= platforms[j].x &&
+          balls[q].getCurrentPos().x + balls[q].getCurrentPos().r <= platforms[j].x + platforms[j].width &&
+          balls[q].getCurrentPos().y - balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height -1 &&
+          balls[q].getCurrentPos().y - balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height +1) { //Here we decided to check if its in an interval, for better results
+            console.log("Bateu em baixo")
+            balls[q].vy = -balls[q].vy
         }
-        if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= platforms[j].x
-          && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= platforms[j].y
-        ) {
-          balls[q].vx = -balls[q].vx
+        //Up Collision
+        else if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= platforms[j].x &&
+          balls[q].getCurrentPos().x + balls[q].getCurrentPos().r <= platforms[j].x + platforms[j].width &&
+          balls[q].getCurrentPos().y + balls[q].getCurrentPos().r <= platforms[j].y -1 &&
+          balls[q].getCurrentPos().y + balls[q].getCurrentPos().r <= platforms[j].y +1) {
+            console.log("Bateu em cima")
+            balls[q].vy = -balls[q].vy
+        }
+        //Left Collision
+        else if ((balls[q].getCurrentPos().y + balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height ||
+          balls[q].getCurrentPos().y - balls[q].getCurrentPos().r >= platforms[j].y) &&
+          (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= platforms[j].x -1 &&
+          balls[q].getCurrentPos().x + balls[q].getCurrentPos().r <= platforms[j].x +1)) {
+            console.log("Bateu em esquerda")
+            balls[q].vx = -balls[q].vx
+        }
+        //Right Collision
+        else if ((balls[q].getCurrentPos().y + balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height ||
+          balls[q].getCurrentPos().y - balls[q].getCurrentPos().r >= platforms[j].y) &&
+          (balls[q].getCurrentPos().x - balls[q].getCurrentPos().r >= platforms[j].x + platform[j].width -1 &&
+          balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= platforms[j].x + platform[j].width +1)) {
+            console.log("Bateu em esquerda")
+            balls[q].vx = -balls[q].vx
         }
       }
     }
