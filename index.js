@@ -531,17 +531,15 @@ function Animate() {
         //Left Collision
         else if ((balls[q].getCurrentPos().y + balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height ||
           balls[q].getCurrentPos().y - balls[q].getCurrentPos().r >= platforms[j].y) &&
-          (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= platforms[j].x - 1 &&
-            balls[q].getCurrentPos().x + balls[q].getCurrentPos().r <= platforms[j].x + 1)) {
+          (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r == platforms[j].x)) {
           console.log("Bateu em esquerda")
           balls[q].vx = -balls[q].vx
         }
         //Right Collision
         else if ((balls[q].getCurrentPos().y + balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height ||
           balls[q].getCurrentPos().y - balls[q].getCurrentPos().r >= platforms[j].y) &&
-          (balls[q].getCurrentPos().x - balls[q].getCurrentPos().r >= platforms[j].x + platforms[j].width - 1 &&
-            balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= platforms[j].x + platforms[j].width + 1)) {
-          console.log("Bateu em esquerda")
+          (balls[q].getCurrentPos().x - balls[q].getCurrentPos().r == platforms[j].x + platforms[j].width)) {
+          console.log("Bateu em direita")
           balls[q].vx = -balls[q].vx
         }
       }
