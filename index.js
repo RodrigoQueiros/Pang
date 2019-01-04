@@ -35,7 +35,7 @@ let powerup1 = false
 let powerup2 = false
 let powerup3 = false
 let timesUp = false
-
+let randPUP  = 0
 //Platforms
 let platforms = []
 
@@ -452,8 +452,9 @@ function Animate() {
         }
 
         //Random PowerUp with random change of drop
-        let randPUP = Math.random() * 3
-        if(randPUP == 2){
+        randPUP = Math.floor(Math.random() * 3)
+        console.log(randPUP)
+        if(randPUP == 1){
           let x = balls[q].getCurrentPos().x - 25
           let y = balls[q].getCurrentPos().y - 25
           let id = Math.floor(Math.random() * 4) + 1
