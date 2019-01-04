@@ -39,7 +39,6 @@ let randPUP  = 0
 //Platforms
 let platforms = []
 
-<<<<<<< HEAD
 //Levels
 let levels = [{
   number: 1,
@@ -63,8 +62,6 @@ let levels = [{
     h: 50
   }]
 }]
-=======
->>>>>>> 3bf05c2cef4ae0b88137ef5c419c5861e4c096c6
 
 function PowerUp(x, y, id, img) {
   this.x = x
