@@ -540,7 +540,7 @@ function Animate() {
         else if ((balls[q].getCurrentPos().y + balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height ||
           balls[q].getCurrentPos().y - balls[q].getCurrentPos().r >= platforms[j].y) &&
           (balls[q].getCurrentPos().x - balls[q].getCurrentPos().r >= platforms[j].x + platforms[j].width - 1 &&
-            balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= platforms[j].x + platform[sj].width + 1)) {
+            balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= platforms[j].x + platforms[j].width + 1)) {
           console.log("Bateu em esquerda")
           balls[q].vx = -balls[q].vx
         }
