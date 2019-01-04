@@ -20,20 +20,13 @@ let pause = false
 let animation2 = null
 let controlsBool = false
 
-let currentLevel = 1
-let creationOfLevel = true
-
-let backgroundSrc = ""
-
-let platforms = []
-
 //Harpoon
 let harpoons = []
 let maxHarpoons = 1 //For powerUps
 
 //Ball
 let iniRadius = 60
-let minimumRadius = 15
+let minimumRadius = iniRadius / 4
 let balls = []
 
 //PowerUp
@@ -43,24 +36,9 @@ let powerup2 = false
 let powerup3 = false
 let timesUp = false
 
-//Levels
-let levels = [{
-  number: 1,
-  ballsBig: 1,
-  backgroundSrc: "images2/background.gif",
-  platforms: [],
-},
-{
-  number: 2,
-  ballsBig: 2,
-  backgroundSrc: "images2/background2.gif",
-  platforms: [{
-    x: 500,
-    y: 500,
-    w: 500,
-    h: 100
-  }]
-}]
+//Platforms
+let platforms = []
+
 
 function PowerUp(x, y, id, img) {
   this.x = x
@@ -143,7 +121,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
   this.image.src = "images2/gb_walk.png"
 
   this.ground = canvas.height
-  //this.onPlatform = false
+  this.onPlatform = false
 
   //Draw player 
   this.draw = function () {
@@ -161,10 +139,8 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
     this.down = down
     this.space = space
 
-    //ctx.fillStyle = "white"
-    let background = new Image()
-    background.src = backgroundSrc
-    ctx.drawImage(background, 0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = "white"
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     if (!(this.stepUpDown != 10)) {//Only happens when the sprite is not in the air
       if (this.right) {
@@ -175,39 +151,35 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
           this.step = canvas.width - this.playerWidth - 1
         }
         //ctx.drawImage(this.image, this.currentFrame * this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
-        //if (!this.onPlatform) { //onPlatform verifies if is in a platform
-        ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
-        //}
-
+        if (!this.onPlatform) { //onPlatform verifies if is in a platform
+          ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+        }
+        
       }
       else if (this.left) {
-
         this.spriteLine = 110
         this.step = this.step - 20
 
         if (this.step < 0) {
           this.step = 1
         }
-        //if (!this.onPlatform) {
+        if (!this.onPlatform) {
         ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
-        //}
+        }
       }
-      else if (this.space) {
+      else if (this.space) { //Precisamos pensar melhor na tecla espaço, estou a por true quando é up, e false a down, mas o harpão so lança a down
         this.spriteLine = 440
         this.step = this.step
 
         ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y, this.playerWidth, this.playerHeight)
 
       }
-      /*
       else if (this.down) {
-
         this.spriteLine = 110
         this.stepUpDown = this.stepUpDown - 10
         ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y + this.stepUpDown, this.playerWidth, this.playerHeight)
       }
-      */
-      else if (this.nothing) {
+      else if (this.nothing && !this.onPlatform) {
         ctx.drawImage(this.image, this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
       }
     }
@@ -218,13 +190,14 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
       this.stepUpDown = this.stepUpDown - 10
       ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y - this.stepUpDown, this.playerWidth, this.playerHeight)
 
-      /*
-      if (this.getCurrentPos().y - this.stepUpDown <= platform1.y && (this.getCurrentPos().x <= platform1.x)) {
+      console.log(this.getCurrentPos().y - this.stepUpDown)
+
+      if (this.getCurrentPos().y - this.stepUpDown <= platform1.y) {
 
         this.ground = platform1.y - this.playerHeight
         this.onPlatform = true
 
-      }*/
+      }
 
     }
     if (this.up) {
@@ -241,7 +214,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
 
   this.getCurrentPos = function () {
     let x = this.step + (this.playerWidth / 2)
-    let y = this.ground //- this.stepUpDown
+    let y = this.ground
     let playerPos = {
       x: x,
       y: y
@@ -377,55 +350,25 @@ function powerupActivate(i) {
 
 window.onload = function () {
 
+  //Falta ver altura max e relacionar com raio e vy
+  let x = 100
+  let y = 400
+  let radius = iniRadius
+  let speed = 0.1
+  let velIn = 5
+  let ang = -85
+  let vx = velIn * Math.cos(ang * Math.PI / 180)
+  let vy = velIn * Math.sin(ang * Math.PI / 180)
 
-  //balls.push(new Ball(x, y, vx, vy, radius, speed, velIn, ang))
-  //platform1 = (new Platform(500, 300, 500, 50))
+  balls.push(new Ball(x, y, vx, vy, radius, speed, velIn, ang))
+  platform1 = (new Platform(500,300,500,50))
 
   menu()
-
 }
 
 function Animate() {
 
-  if (creationOfLevel) {
-    for (let i = 0; i < levels.length; i++) {
-
-      if (currentLevel == levels[i].number) {
-
-        //This will insert all the data into the level
-        for (let j = levels[i].ballsBig; j > 0; j--) {
-
-          let x = j * 100
-          let y = 400
-          let radius = 60
-          let speed = 0.1
-          let velIn = 5
-          let ang = -85
-          let vx = velIn * Math.cos(ang * Math.PI / 180)
-          let vy = velIn * Math.sin(ang * Math.PI / 180)
-
-          balls.push(new Ball(x, y, vx, vy, radius, speed, velIn, ang))
-        }
-
-        for (let a = 0; a < levels[i].platforms.length; a++) {
-
-          let plats = levels[i].platforms[a]
-
-          platforms.push(new Platform(plats.x, plats.y, plats.w, plats.h))
-
-        }
-
-        backgroundSrc = levels[i].backgroundSrc
-
-      }
-    }
-    creationOfLevel = false
-  }
-
-  let background = new Image()
-  background.src = backgroundSrc
-  ctx.drawImage(background, 0, 0, canvas.width, canvas.height)
-
+  
   // player
   player1.draw();
 
@@ -473,16 +416,10 @@ function Animate() {
     harpoons[i].draw()
   }
 
-  for (let i = 0; i < platforms.length; i++) {
-
-    platforms[i].draw()
-
-  }
-
   for (let j = 0; j < harpoons.length; j++) {
     if (powerup1 == true) {
       //If space splice 
-      if (space) { harpoons.splice(j, 1) }
+      if(space){harpoons.splice(j, 1)}
     }
     else if (powerup1 == false) {
       if (harpoons[j].y - harpoons[j].increment < 10) {
@@ -497,29 +434,9 @@ function Animate() {
 
   for (let q = 0; q < balls.length; q++) {
     //Freeze
-    if (powerup3 == false) {
-
-      balls[q].update()
-
-      for (let j = 0; j < platforms.length; j++) {
-        //Collision with platforms
-        if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= platforms[j].x
-          && balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= platforms[j].x + platforms[j].width
-          && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= platforms[j].y
-          && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height
-        ) {
-          balls[q].vy = -balls[q].vy
-        }
-        if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= platforms[j].x
-          && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= platforms[j].y
-        ) {
-          balls[q].vx = -balls[q].vx
-        }
-      }
-    }
+    if(powerup3==false){balls[q].update()}
     for (let j = 0; j < harpoons.length; j++) {
 
-      //Collision with harpoon
       if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().x
         && balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= harpoons[j].getCurrentPos().x1
         && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().y
@@ -535,11 +452,16 @@ function Animate() {
         }
 
         //Random PowerUp with random change of drop
-        let x = balls[q].getCurrentPos().x - 25
-        let y = balls[q].getCurrentPos().y - 25
-        let id = Math.floor(Math.random() * 4) + 1
-        let img = new Image()
-        powerups.push(new PowerUp(x, y, id, img))
+        let randPUP = Math.random() * 3
+        if(randPUP == 2){
+          let x = balls[q].getCurrentPos().x - 25
+          let y = balls[q].getCurrentPos().y - 25
+          let id = Math.floor(Math.random() * 4) + 1
+          let img = new Image()
+          powerups.push(new PowerUp(x, y, id, img))
+
+        }
+        
 
       }
 
@@ -565,8 +487,6 @@ function Animate() {
   //ver posicao no codigo
   if (balls.length == 0) {
     console.log("game won")
-    creationOfLevel = true
-    currentLevel++
     gameWonBool = true
     gameWon()
   }
@@ -575,11 +495,11 @@ function Animate() {
   currentFrame++
   if (currentFrame >= 500) {
     currentFrame = 0
-    powerup3 = false
+    powerup3=false
   }
 
   //draw platform tests
-  //platform1.draw()
+  platform1.draw()
 
   //window.requestAnimationFrame(Animate)
   //Draw lives
@@ -624,7 +544,6 @@ function Animate() {
         break;
     }
   }
-
 }
 
 function divideBall(x, y, r) {
@@ -681,7 +600,7 @@ function menu() {
   let text2 = "Controls"
   let textWidth2 = ctx.measureText(text2).width
   console.log(textWidth2)
-  ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 400)
+  ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 400)  
 }
 
 function Controls() {
@@ -697,7 +616,7 @@ function Controls() {
   ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 100)
 
   let img = new Image()
-  img.src = "images2/controls.png"
+  img.src = "images2/controls.png" 
   img.addEventListener("load", function () {
     ctx.drawImage(img, 300, 150)
   })
@@ -706,7 +625,7 @@ function Controls() {
   ctx.fillStyle = "white"
   let text2 = "Back"
   let textWidth2 = ctx.measureText(text2).width
-  console.log("baclk:" + textWidth2)
+  console.log("baclk:"+textWidth2)
   ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 500)
 }
 
@@ -726,7 +645,7 @@ function gameOver() {
   ctx.fillStyle = "white"
   let text2 = "Try Again"
   let textWidth2 = ctx.measureText(text2).width
-  console.log("tryagain: " + textWidth2)
+  console.log("tryagain: "+textWidth2)
   ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 300)
 
 }
@@ -765,7 +684,7 @@ function gameWon() {
   ctx.fillStyle = "white"
   let text2 = "Try Again"
   let textWidth2 = ctx.measureText(text2).width
-  console.log("tryagain: " + textWidth2)
+  console.log("tryagain: "+textWidth2)
   ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 300)
 
 }
@@ -845,7 +764,7 @@ function mouseFunction(e) {
         startGame = false
       }
     }
-
+    
     if (mouseY < 400 && mouseY > 400 - 40 && mouseX < (canvas.width / 2) - (186.181640625 / 2) + 186.181640625 && mouseX > (canvas.width / 2) - (186.181640625 / 2)) { //textheight = 40, textwidth = 186.181640625
       Controls()
     }
