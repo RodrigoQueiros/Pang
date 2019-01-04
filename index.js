@@ -19,6 +19,7 @@ let animation = null
 let pause = false
 let animation2 = null
 let controlsBool = false
+let level = false
 
 let currentLevel = 1
 let creationOfLevel = true
@@ -56,10 +57,21 @@ let levels = [{
   ballsBig: 2,
   backgroundSrc: "images2/background2.gif",
   platforms: [{
-    x: 500,
-    y: 500,
-    w: 500,
-    h: 100
+    // x: 500,
+    // y: 500,
+    // w: 500,
+    // h: 100
+  }]
+},
+{
+  number: 3,
+  ballsBig: 3,
+  backgroundSrc: "images2/background3.gif",
+  platforms: [{
+    // x: 500,
+    // y: 500,
+    // w: 500,
+    // h: 100
   }]
 }]
 
@@ -384,7 +396,7 @@ window.onload = function () {
 }
 
 function Animate() {
-
+  level = false
   if (creationOfLevel) {
     for (let i = 0; i < levels.length; i++) {
 
@@ -534,7 +546,7 @@ function Animate() {
 
         randPUP = Math.floor(Math.random() * 3)
         console.log(randPUP)
-        if(randPUP == 1){
+        if (randPUP == 1) {
           let x = balls[q].getCurrentPos().x - 25
           let y = balls[q].getCurrentPos().y - 25
           let id = Math.floor(Math.random() * 4) + 1
@@ -569,9 +581,16 @@ function Animate() {
   if (balls.length == 0) {
     console.log("game won")
     creationOfLevel = true
-    currentLevel++
-    gameWonBool = true
-    gameWon()
+      currentLevel++
+    if (currentLevel == 4) {
+      gameWonBool = true
+      gameWon()
+    }
+    else {
+      
+      LevelWon()
+    }
+    
   }
 
   //Update sprite location and stop PowerUpFreeze
@@ -591,7 +610,7 @@ function Animate() {
   //   ctx.fillText("lives: " + lives, 8, 20)
   // }
 
-  if (gameWonBool == false) {
+  if (gameWonBool == false && level == false) {
     switch (lives) {
       case 0:
         let a = new Image()
@@ -773,6 +792,29 @@ function gameWon() {
 
 }
 
+function LevelWon() {
+  
+  level = true
+  clearInterval(animation)
+  ctx.fillStyle = "black"
+  ctx.rect(0, 0, canvas.width, canvas.height)
+  ctx.fill()
+  ctx.font = "60px Arial"
+  ctx.fillStyle = "white"
+  let text = "Level " + (currentLevel - 1) + " Completed"
+  let textWidth = ctx.measureText(text).width
+  console.log(textWidth)
+  ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 200)
+
+  ctx.font = "50px Arial"
+  ctx.fillStyle = "white"
+  let text2 = "Next Level"
+  let textWidth2 = ctx.measureText(text2).width
+  console.log("level: " + textWidth2)
+  ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 300)
+
+}
+
 // Key press and Key Up - eventListener
 function keyDown(e) {
   switch (e.keyCode) {
@@ -861,6 +903,12 @@ function mouseFunction(e) {
       if (gameOverBool == true || gameWonBool == true) {
         location.reload()
       }
+    }
+    if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (236.23046875 / 2) + 236.23046875 && mouseX > (canvas.width / 2) - (236.23046875 / 2)) {
+      if (level == true) {
+        startAnimation()
+      }
+      
     }
   }
 }
