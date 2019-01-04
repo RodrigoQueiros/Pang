@@ -48,6 +48,12 @@ let levels = [{
   number: 1,
   ballsBig: 1,
   backgroundSrc: "images2/background.gif",
+  platforms: [],
+},
+{
+  number: 2,
+  ballsBig: 2,
+  backgroundSrc: "images2/background2.gif",
   platforms: [{
     x: 500,
     y: 500,
@@ -505,10 +511,10 @@ function Animate() {
           balls[q].vy = -balls[q].vy
         }
         if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= platforms[j].x
-        && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= platforms[j].y
-      ) {
-        balls[q].vx = -balls[q].vx
-      }
+          && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= platforms[j].y
+        ) {
+          balls[q].vx = -balls[q].vx
+        }
       }
     }
     for (let j = 0; j < harpoons.length; j++) {
