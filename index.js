@@ -59,16 +59,27 @@ let levels = [{
   ballsBig: 2,
   backgroundSrc: "images2/background2.gif",
   platforms: [{
-    x: 200,
-    y: 200,
-    w: 200,
-    h: 50
+    // x: 200,
+    // y: 200,
+    // w: 200,
+    // h: 50
   }]
 },
 {
   number: 3,
   ballsBig: 3,
   backgroundSrc: "images2/background3.gif",
+  platforms: [{
+    // x: 200,
+    // y: 200,
+    // w: 200,
+    // h: 50
+  }]
+},
+{
+  number: 4,
+  ballsBig: 4,
+  backgroundSrc: "images2/background4.png",
   platforms: [
 
   ]
@@ -183,7 +194,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
     if (!(this.stepUpDown != 10)) {//Only happens when the sprite is not in the air
       if (this.right) {
         this.spriteLine = 0
-        this.step = this.step + 20
+        this.step = this.step + 10
 
         if (this.step > canvas.width - this.playerWidth) {
           this.step = canvas.width - this.playerWidth - 1
@@ -197,7 +208,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
       else if (this.left) {
 
         this.spriteLine = 110
-        this.step = this.step - 20
+        this.step = this.step - 10
 
         if (this.step < 0) {
           this.step = 1
@@ -597,9 +608,10 @@ function Animate() {
   }
   //ver posicao no codigo
   if (balls.length == 0) {
+    powerups = []
     creationOfLevel = true
     currentLevel++
-    if (currentLevel == 4) {
+    if (currentLevel == 5) {
       gameWonBool = true
       gameWon()
     }
@@ -919,7 +931,7 @@ function keySpaceBarHandler(e) {
 }
 
 function keyEnterHandler(e) {
-  if (gameOverBool == false && gameWonBool == false && startGame == false) {
+  if (gameOverBool == false && gameWonBool == false && startGame == false && level == false) {
     if (e.keyCode == 13) {
       if (pause == false) {
         pause = true
@@ -991,16 +1003,16 @@ function mouseFunction(e) {
   
   else {
     if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (212.109375 / 2) + 212.109375 && mouseX > (canvas.width / 2) - (212.109375 / 2)) { //textheight = 20, textwidth = 212.109375
-      if (gameOverBool == true || gameWonBool == true) {
+      if (gameOverBool == true || gameWonBool == true ) {
         location.reload()
       }
     }
-    // if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (236.23046875 / 2) + 236.23046875 && mouseX > (canvas.width / 2) - (236.23046875 / 2)) {
-    //   if (level == true) {
-    //     startAnimation()
-    //   }
+     if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (236.23046875 / 2) + 236.23046875 && mouseX > (canvas.width / 2) - (236.23046875 / 2)) {
+       if (level == true) {
+         startAnimation()
+       }
 
-    // }
+     }
   }
 }
 
