@@ -26,6 +26,10 @@ let scoreMultiplier = 1
 let scorePlus = 100
 let currentScore = 0
 let currentBest = 0
+if (localStorage.getItem("currentBest") == null){
+  localStorage.setItem("currentBest", currentBest)
+}
+
 
 let currentLevel = 1
 let creationOfLevel = true
