@@ -612,7 +612,7 @@ function Animate() {
     powerups = []
     creationOfLevel = true
     currentLevel++
-    if (currentLevel == 4) {
+    if (currentLevel == 5) {
       gameWonBool = true
       gameWon()
     }
@@ -712,6 +712,7 @@ function divideBall(x, y, r) {
 function menu() {
 
   //Menu
+  menuBool = true
   levelsMenuBool = false
   controlsBool = false
   ctx.fillStyle = "black"
@@ -740,6 +741,8 @@ function menu() {
   let text3 = "Levels"
   let textWidth3 = ctx.measureText(text3).width
   ctx.fillText(text3, (canvas.width / 2) - (textWidth3 / 2), 500)
+
+  console.log(menuBool)
 }
 
 function Controls() {
@@ -882,7 +885,7 @@ function levelsMenu() {
   let text5 = "Back"
   let textWidth5 = ctx.measureText(text5).width
   ctx.fillText(text5, (canvas.width / 2) - (textWidth5 / 2), 500)
-
+  
 }
 
 // Key press and Key Up - eventListener
@@ -954,7 +957,7 @@ function mouseFunction(e) {
   let mouseX = e.pageX - canvas.offsetLeft
   let mouseY = e.pageY - canvas.offsetTop
   if (startGame == true) {
-    if (controlsBool == false && levelsMenuBool == false  ) {
+    if (controlsBool == false && levelsMenuBool == false) {
       if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (255.6396484375 / 2) + 255.6396484375 && mouseX > (canvas.width / 2) - (255.6396484375 / 2)) { //textheight = 40, textwidth = 255.6396484375
         startAnimation()
         startGame = false
@@ -962,16 +965,18 @@ function mouseFunction(e) {
     }
 
     if (levelsMenuBool == false) {
-      
+
       if (mouseY < 400 && mouseY > 400 - 40 && mouseX < (canvas.width / 2) - (186.181640625 / 2) + 186.181640625 && mouseX > (canvas.width / 2) - (186.181640625 / 2)) { //textheight = 40, textwidth = 186.181640625
         console.log("entrou controls")
         Controls()
       }
-      if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
-        console.log("entrou menu")
-        menu()
-      }
-      console.log(levelsMenuBool)
+      console.log(menuBool)
+      
+        if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
+          console.log("entrou menu")
+          menu()
+        }
+      
     }
 
     if (controlsBool == false) {
@@ -979,42 +984,46 @@ function mouseFunction(e) {
         console.log("entrou levels")
         levelsMenu()
       }
+      console.log(menuBool)
       if (menuBool == false) {
         if (mouseY < 225 && mouseY > 225 - 30 && mouseX < (canvas.width / 2) - (128.984375 / 2) + 128.984375 && mouseX > (canvas.width / 2) - (128.984375 / 2)) {
+          startGame = false
+          console.log(gameOverBool, gameWonBool, startGame, level)
           startAnimation()
         }
         if (mouseY < 300 && mouseY > 300 - 30 && mouseX < (canvas.width / 2) - (128.984375 / 2) + 128.984375 && mouseX > (canvas.width / 2) - (128.984375 / 2)) {
+          startGame = false
           currentLevel = 2
           startAnimation()
         }
         if (mouseY < 375 && mouseY > 375 - 30 && mouseX < (canvas.width / 2) - (128.984375 / 2) + 128.984375 && mouseX > (canvas.width / 2) - (128.984375 / 2)) {
+          startGame = false
           currentLevel = 3
           startAnimation()
         }
         if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
           console.log("entrou menu")
           menu()
-        } 
+        }
       }
     }
-    if (controlsBool || levelsMenuBool) {
-      
-    }
-    
+
   }
-  
+
   else {
     if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (212.109375 / 2) + 212.109375 && mouseX > (canvas.width / 2) - (212.109375 / 2)) { //textheight = 20, textwidth = 212.109375
-      if (gameOverBool == true || gameWonBool == true ) {
+      if (gameOverBool == true || gameWonBool == true) {
         location.reload()
       }
     }
-     if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (236.23046875 / 2) + 236.23046875 && mouseX > (canvas.width / 2) - (236.23046875 / 2)) {
-       if (level == true) {
-         startAnimation()
-       }
+    if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (236.23046875 / 2) + 236.23046875 && mouseX > (canvas.width / 2) - (236.23046875 / 2)) {
+      if (level == true) {
+        startAnimation()
+        console.log(levelsMenuBool)
+        level = false
+      }
 
-     }
+    }
   }
 }
 
