@@ -22,6 +22,10 @@ let controlsBool = false
 let level = false
 let levelsMenuBool = false
 let menuBool = true
+let scoreMultiplier = 1
+let scorePlus = 100
+let currentScore = 0
+let currentBest = 0
 
 let currentLevel = 1
 let creationOfLevel = true
@@ -565,6 +569,10 @@ function Animate() {
         && balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= harpoons[j].getCurrentPos().x1
         && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().y
       ) {
+
+        scoreMultiplier += 0.1
+        currentScore = parseInt(currentScore + (scorePlus * scoreMultiplier))
+        console.log("Score: "+ currentScore)
         harpoons.splice(j, 1)
 
         if (!(balls[q].getCurrentPos().r == minimumRadius)) {
@@ -595,7 +603,7 @@ function Animate() {
       && balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= player1.getCurrentPos().x + playerWidth
       && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= player1.getCurrentPos().y
     ) {
-
+      scoreMultiplier = 1
       if (lives > 0) {
         lives--
       }
@@ -710,7 +718,8 @@ function divideBall(x, y, r) {
 }
 
 function menu() {
-
+  scoreMultiplier = 1
+  currentScore = 0
   //Menu
   menuBool = true
   levelsMenuBool = false
