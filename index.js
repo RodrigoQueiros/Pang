@@ -20,6 +20,8 @@ let pause = false
 let animation2 = null
 let controlsBool = false
 let level = false
+let levelsMenuBool = false
+let menuBool = true
 
 let currentLevel = 1
 let creationOfLevel = true
@@ -54,7 +56,7 @@ let levels = [{
 },
 {
   number: 2,
-  ballsBig: 1,
+  ballsBig: 2,
   backgroundSrc: "images2/background2.gif",
   platforms: [{
     x: 200,
@@ -67,9 +69,9 @@ let levels = [{
   number: 3,
   ballsBig: 3,
   backgroundSrc: "images2/background3.gif",
-  platforms: [{
+  platforms: [
 
-  }]
+  ]
 }]
 
 function PowerUp(x, y, id, img) {
@@ -176,7 +178,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
     background.src = backgroundSrc
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height)
 
-    
+
 
     if (!(this.stepUpDown != 10)) {//Only happens when the sprite is not in the air
       if (this.right) {
@@ -696,6 +698,7 @@ function divideBall(x, y, r) {
 function menu() {
 
   //Menu
+  levelsMenuBool = false
   controlsBool = false
   ctx.fillStyle = "black"
   ctx.rect(0, 0, canvas.width, canvas.height)
@@ -710,15 +713,19 @@ function menu() {
   ctx.fillStyle = "white"
   let text = "Start Game"
   let textWidth = ctx.measureText(text).width
-  console.log(textWidth)
   ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 300)
 
   ctx.font = "50px Arial"
   ctx.fillStyle = "white"
   let text2 = "Controls"
   let textWidth2 = ctx.measureText(text2).width
-  console.log(textWidth2)
   ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 400)
+
+  ctx.font = "50px Arial"
+  ctx.fillStyle = "white"
+  let text3 = "Levels"
+  let textWidth3 = ctx.measureText(text3).width
+  ctx.fillText(text3, (canvas.width / 2) - (textWidth3 / 2), 500)
 }
 
 function Controls() {
@@ -743,13 +750,13 @@ function Controls() {
   ctx.fillStyle = "white"
   let text2 = "Back"
   let textWidth2 = ctx.measureText(text2).width
-  console.log("baclk:" + textWidth2)
   ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 500)
 }
 
 function gameOver() {
   startGame = false
   clearInterval(animation)
+
   ctx.fillStyle = "black"
   ctx.rect(0, 0, canvas.width, canvas.height)
   ctx.fill()
@@ -763,7 +770,6 @@ function gameOver() {
   ctx.fillStyle = "white"
   let text2 = "Try Again"
   let textWidth2 = ctx.measureText(text2).width
-  console.log("tryagain: " + textWidth2)
   ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 300)
 
 }
@@ -788,6 +794,7 @@ function Pause() {
 function gameWon() {
   startGame = false
   clearInterval(animation)
+
   ctx.fillStyle = "black"
   ctx.rect(0, 0, canvas.width, canvas.height)
   ctx.fill()
@@ -795,14 +802,12 @@ function gameWon() {
   ctx.fillStyle = "white"
   let text = "Game Won"
   let textWidth = ctx.measureText(text).width
-  console.log(textWidth)
   ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 200)
 
   ctx.font = "50px Arial"
   ctx.fillStyle = "white"
   let text2 = "Try Again"
   let textWidth2 = ctx.measureText(text2).width
-  console.log("tryagain: " + textWidth2)
   ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 300)
 
 }
@@ -818,15 +823,51 @@ function LevelWon() {
   ctx.fillStyle = "white"
   let text = "Level " + (currentLevel - 1) + " Completed"
   let textWidth = ctx.measureText(text).width
-  console.log(textWidth)
   ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 200)
 
   ctx.font = "50px Arial"
   ctx.fillStyle = "white"
   let text2 = "Next Level"
   let textWidth2 = ctx.measureText(text2).width
-  console.log("level: " + textWidth2)
   ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 300)
+}
+
+function levelsMenu() {
+  menuBool = false
+  levelsMenuBool = true
+  ctx.fillStyle = "black"
+  ctx.rect(0, 0, canvas.width, canvas.height)
+  ctx.fill()
+
+  ctx.font = "50px Arial"
+  ctx.fillStyle = "white"
+  let text4 = "Levels"
+  let textWidth4 = ctx.measureText(text4).width
+  ctx.fillText(text4, (canvas.width / 2) - (textWidth4 / 2), 100)
+
+  ctx.font = "40px Arial"
+  ctx.fillStyle = "white"
+  let text = "Level 1"
+  let textWidth = ctx.measureText(text).width
+  ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 225)
+
+  ctx.font = "40px Arial"
+  ctx.fillStyle = "white"
+  let text2 = "Level 2"
+  let textWidth2 = ctx.measureText(text2).width
+  ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 300)
+
+  ctx.font = "40px Arial"
+  ctx.fillStyle = "white"
+  let text3 = "Level 3"
+  let textWidth3 = ctx.measureText(text3).width
+  ctx.fillText(text3, (canvas.width / 2) - (textWidth3 / 2), 375)
+
+  ctx.font = "25px Arial"
+  ctx.fillStyle = "white"
+  let text5 = "Back"
+  let textWidth5 = ctx.measureText(text5).width
+  ctx.fillText(text5, (canvas.width / 2) - (textWidth5 / 2), 500)
 
 }
 
@@ -899,32 +940,67 @@ function mouseFunction(e) {
   let mouseX = e.pageX - canvas.offsetLeft
   let mouseY = e.pageY - canvas.offsetTop
   if (startGame == true) {
-    if (controlsBool == false) {
+    if (controlsBool == false && levelsMenuBool == false  ) {
       if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (255.6396484375 / 2) + 255.6396484375 && mouseX > (canvas.width / 2) - (255.6396484375 / 2)) { //textheight = 40, textwidth = 255.6396484375
         startAnimation()
         startGame = false
       }
     }
 
-    if (mouseY < 400 && mouseY > 400 - 40 && mouseX < (canvas.width / 2) - (186.181640625 / 2) + 186.181640625 && mouseX > (canvas.width / 2) - (186.181640625 / 2)) { //textheight = 40, textwidth = 186.181640625
-      Controls()
+    if (levelsMenuBool == false) {
+      
+      if (mouseY < 400 && mouseY > 400 - 40 && mouseX < (canvas.width / 2) - (186.181640625 / 2) + 186.181640625 && mouseX > (canvas.width / 2) - (186.181640625 / 2)) { //textheight = 40, textwidth = 186.181640625
+        console.log("entrou controls")
+        Controls()
+      }
+      if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
+        console.log("entrou menu")
+        menu()
+      }
+      console.log(levelsMenuBool)
     }
-    if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
-      menu()
+
+    if (controlsBool == false) {
+      if (mouseY < 500 && mouseY > 500 - 40 && mouseX < (canvas.width / 2) - (144.53125 / 2) + 144.53125 && mouseX > (canvas.width / 2) - (144.53125 / 2)) { //textheight = 40, textwidth = 186.181640625
+        console.log("entrou levels")
+        levelsMenu()
+      }
+      if (menuBool == false) {
+        if (mouseY < 225 && mouseY > 225 - 30 && mouseX < (canvas.width / 2) - (128.984375 / 2) + 128.984375 && mouseX > (canvas.width / 2) - (128.984375 / 2)) {
+          startAnimation()
+        }
+        if (mouseY < 300 && mouseY > 300 - 30 && mouseX < (canvas.width / 2) - (128.984375 / 2) + 128.984375 && mouseX > (canvas.width / 2) - (128.984375 / 2)) {
+          currentLevel = 2
+          startAnimation()
+        }
+        if (mouseY < 375 && mouseY > 375 - 30 && mouseX < (canvas.width / 2) - (128.984375 / 2) + 128.984375 && mouseX > (canvas.width / 2) - (128.984375 / 2)) {
+          currentLevel = 3
+          startAnimation()
+        }
+        if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
+          console.log("entrou menu")
+          menu()
+        } 
+      }
     }
+    if (controlsBool || levelsMenuBool) {
+      
+    }
+    
   }
+  
   else {
     if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (212.109375 / 2) + 212.109375 && mouseX > (canvas.width / 2) - (212.109375 / 2)) { //textheight = 20, textwidth = 212.109375
       if (gameOverBool == true || gameWonBool == true) {
         location.reload()
       }
     }
-    if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (236.23046875 / 2) + 236.23046875 && mouseX > (canvas.width / 2) - (236.23046875 / 2)) {
-      if (level == true) {
-        startAnimation()
-      }
+    // if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (236.23046875 / 2) + 236.23046875 && mouseX > (canvas.width / 2) - (236.23046875 / 2)) {
+    //   if (level == true) {
+    //     startAnimation()
+    //   }
 
-    }
+    // }
   }
 }
 
