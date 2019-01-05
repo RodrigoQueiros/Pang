@@ -75,15 +75,16 @@ let levels = [{
     // w: 200,
     // h: 50
   }]
-},
-{
-  number: 4,
-  ballsBig: 4,
-  backgroundSrc: "images2/background4.png",
-  platforms: [
+}
+// {
+//   number: 4,
+//   ballsBig: 4,
+//   backgroundSrc: "images2/background4.png",
+//   platforms: [
 
-  ]
-}]
+//   ]
+// }
+]
 
 function PowerUp(x, y, id, img) {
   this.x = x
@@ -611,7 +612,7 @@ function Animate() {
     powerups = []
     creationOfLevel = true
     currentLevel++
-    if (currentLevel == 5) {
+    if (currentLevel == 4) {
       gameWonBool = true
       gameWon()
     }
@@ -621,6 +622,7 @@ function Animate() {
     }
 
   }
+  console.log(currentLevel)
 
   //Update sprite location and stop PowerUpFreeze
   currentFrame++
@@ -753,9 +755,9 @@ function Controls() {
   ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 100)
 
   let img = new Image()
-  img.src = "images2/controls.png"
+  img.src = "images2/controls2.png"
   img.addEventListener("load", function () {
-    ctx.drawImage(img, 300, 150)
+    ctx.drawImage(img, 150, 175)
   })
 
   ctx.font = "25px Arial"
