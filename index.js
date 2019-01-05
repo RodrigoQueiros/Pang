@@ -610,6 +610,10 @@ function Animate() {
 
       if (lives == 0) {
         gameOverBool = true
+        if(currentScore > localStorage.getItem("currentBest")){ 
+          currentBest = currentScore
+          localStorage.setItem("currentBest", currentBest)
+        }
         gameOver()
       }
     }
@@ -620,12 +624,16 @@ function Animate() {
     powerups = []
     creationOfLevel = true
     currentLevel++
-    if (currentLevel == 5) {
+    if (currentLevel == 4) {
       gameWonBool = true
+      if(currentScore > localStorage.getItem("currentBest")){ 
+        currentBest = currentScore
+        localStorage.setItem("currentBest", currentBest)
+      }
       gameWon()
     }
     else {
-
+      
       LevelWon()
     }
 
@@ -654,37 +662,42 @@ function Animate() {
       case 0:
         let a = new Image()
         a.src = "images2/live0.png"
-        ctx.drawImage(a, 8, 20, 100, 16)
+        ctx.drawImage(a, 8, 10, 100, 16)
         break;
       case 1:
         let b = new Image()
         b.src = "images2/live1.png"
-        ctx.drawImage(b, 8, 20, 100, 16)
+        ctx.drawImage(b, 8, 10, 100, 16)
         break;
       case 2:
         let c = new Image()
         c.src = "images2/live2.png"
-        ctx.drawImage(c, 8, 20, 100, 16)
+        ctx.drawImage(c, 8, 10, 100, 16)
         break;
       case 3:
         let d = new Image()
         d.src = "images2/live3.png"
-        ctx.drawImage(d, 8, 20, 100, 16)
+        ctx.drawImage(d, 8, 10, 100, 16)
         break;
       case 4:
         let e = new Image()
         e.src = "images2/live4.png"
-        ctx.drawImage(e, 8, 20, 100, 16)
+        ctx.drawImage(e, 8, 10, 100, 16)
         break;
       case 5:
         let f = new Image()
         f.src = "images2/live5.png"
-        ctx.drawImage(f, 8, 20, 100, 16)
+        ctx.drawImage(f, 8, 10, 100, 16)
         break;
       default: console.log("Error on lives count")
         break;
     }
+    ctx.font = "25px Arial"
+    ctx.fillStyle = "white"
+    ctx.fillText("Score: " + currentScore, 850, 30)
   }
+  
+
 
 }
 
@@ -737,19 +750,26 @@ function menu() {
   ctx.fillStyle = "white"
   let text = "Start Game"
   let textWidth = ctx.measureText(text).width
-  ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 300)
+  ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 275)
 
   ctx.font = "50px Arial"
   ctx.fillStyle = "white"
   let text2 = "Controls"
   let textWidth2 = ctx.measureText(text2).width
-  ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 400)
+  ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 375)
 
   ctx.font = "50px Arial"
   ctx.fillStyle = "white"
   let text3 = "Levels"
   let textWidth3 = ctx.measureText(text3).width
-  ctx.fillText(text3, (canvas.width / 2) - (textWidth3 / 2), 500)
+  ctx.fillText(text3, (canvas.width / 2) - (textWidth3 / 2), 475)
+
+  ctx.font = "40px Arial"
+  ctx.fillStyle = "white"
+  let text4 = "Highscore: " + localStorage.getItem("currentBest")
+  let textWidth4 = ctx.measureText(text4).width
+  ctx.fillText(text4, (canvas.width / 2) - (textWidth4 / 2), 550)
+
 
   console.log(menuBool)
 }
@@ -967,7 +987,7 @@ function mouseFunction(e) {
   let mouseY = e.pageY - canvas.offsetTop
   if (startGame == true) {
     if (controlsBool == false && levelsMenuBool == false) {
-      if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (255.6396484375 / 2) + 255.6396484375 && mouseX > (canvas.width / 2) - (255.6396484375 / 2)) { //textheight = 40, textwidth = 255.6396484375
+      if (mouseY < 275 && mouseY > 275 - 40 && mouseX < (canvas.width / 2) - (255.6396484375 / 2) + 255.6396484375 && mouseX > (canvas.width / 2) - (255.6396484375 / 2)) { //textheight = 40, textwidth = 255.6396484375
         startAnimation()
         startGame = false
       }
@@ -975,13 +995,13 @@ function mouseFunction(e) {
 
     if (levelsMenuBool == false) {
 
-      if (mouseY < 400 && mouseY > 400 - 40 && mouseX < (canvas.width / 2) - (186.181640625 / 2) + 186.181640625 && mouseX > (canvas.width / 2) - (186.181640625 / 2)) { //textheight = 40, textwidth = 186.181640625
+      if (mouseY < 375 && mouseY > 375 - 40 && mouseX < (canvas.width / 2) - (186.181640625 / 2) + 186.181640625 && mouseX > (canvas.width / 2) - (186.181640625 / 2)) { //textheight = 40, textwidth = 186.181640625
         console.log("entrou controls")
         Controls()
       }
       console.log(menuBool)
       
-        if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
+        if (mouseY < 475 && mouseY > 475 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
           console.log("entrou menu")
           menu()
         }
