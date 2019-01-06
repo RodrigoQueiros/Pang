@@ -4,7 +4,7 @@ let ctx = canvas.getContext("2d");
 canvas.width = 1000;
 canvas.height = 600;
 
-//Player\
+//Player e controlos
 let currentFrame = 0
 let right = false
 let left = false
@@ -23,14 +23,16 @@ let level = false
 let levelsMenuBool = false
 let menuBool = true
 let scoreMultiplier = 1
+
 let scorePlus = 100
 let currentScore = 0
 let currentBest = 0
-if (localStorage.getItem("currentBest") == null){
+
+if (localStorage.getItem("currentBest") == null) {
   localStorage.setItem("currentBest", currentBest)
 }
 
-
+//Niveis
 let currentLevel = 1
 let creationOfLevel = true
 
@@ -54,8 +56,9 @@ let powerup2 = false
 let powerup3 = false
 let timesUp = false
 let randPUP = 0
+let powerUpFrame = 0
 
-//Levels
+//Níveis (Arrays de objetos)
 let levels = [{
   number: 1,
   ballsBig: 1,
@@ -83,16 +86,7 @@ let levels = [{
     // w: 200,
     // h: 50
   }]
-}
-// {
-//   number: 4,
-//   ballsBig: 4,
-//   backgroundSrc: "images2/background4.png",
-//   platforms: [
-
-//   ]
-// }
-]
+}]
 
 function PowerUp(x, y, id, img) {
   this.x = x
@@ -101,7 +95,6 @@ function PowerUp(x, y, id, img) {
   this.img = img
   this.cy = 2
 
-  //Math.floor(Math.random()*4);
   switch (this.id) {
     case 1:
       this.img.src = "images2/powerup1.png"
@@ -123,6 +116,7 @@ function PowerUp(x, y, id, img) {
   this.draw = function () {
     ctx.drawImage(this.img, this.x, this.y, 50, 50)
   }
+
   this.update = function () {
 
     if (this.y + 50 > canvas.height) {
@@ -132,6 +126,7 @@ function PowerUp(x, y, id, img) {
     this.y += this.cy
 
   }
+
   this.getCurrentPos = function () {
     let x = this.x
     let y = this.y
@@ -146,7 +141,7 @@ function PowerUp(x, y, id, img) {
 
 }
 
-//Platforms
+//Plataformas
 function Platform(x, y, width, height) {
 
   this.x = x
@@ -163,7 +158,7 @@ function Platform(x, y, width, height) {
 
 }
 
-//Player object
+//Player
 function Player(image, playerWidth, playerHeight, step, spriteLine) {
 
   this.image = image
@@ -177,13 +172,11 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
   this.ground = canvas.height
   //this.onPlatform = false
 
-  //Draw player 
   this.draw = function () {
     ctx.drawImage(this.image, this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
   }
 
-  //Draw player mov
-  this.listenEvent = function (right, left, nothing, currentFrame, up, down, space) {
+  this.listenEvent = function (right, left, nothing, currentFrame, up, down, space) { //Esta função é muito importante, pois é aqui que "ouvimos" em que tecla está a clicar, e assim, decidimos as ações que o sprite irá realizar
 
     this.right = right
     this.left = left
@@ -193,69 +186,69 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
     this.down = down
     this.space = space
 
-    //ctx.fillStyle = "white"
+    //Cada vez que o atualizamos, metemos sempre o background ativo no nivel
     let background = new Image()
     background.src = backgroundSrc
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height)
 
+    //if (!(this.stepUpDown != 10)) {--> Isto serviu para a experiência de fazer o jogador subir para as plataformas, mas não conseguimos concretizar. Por isso, fica para a versão 2 :)
+    if (this.right) {
 
+      this.spriteLine = 0
+      this.step = this.step + 10
 
-    if (!(this.stepUpDown != 10)) {//Only happens when the sprite is not in the air
-      if (this.right) {
-        this.spriteLine = 0
-        this.step = this.step + 10
-
-        if (this.step > canvas.width - this.playerWidth) {
-          this.step = canvas.width - this.playerWidth - 1
-        }
-        //ctx.drawImage(this.image, this.currentFrame * this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
-        //if (!this.onPlatform) { //onPlatform verifies if is in a platform
-        ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
-        //}
-
+      if (this.step > canvas.width - this.playerWidth) {
+        this.step = canvas.width - this.playerWidth - 1
       }
-      else if (this.left) {
 
-        this.spriteLine = 110
-        this.step = this.step - 10
+      //if (!this.onPlatform) { //Verifica se está ou não em cima duma plataforma
+      ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+      //}
 
-        if (this.step < 0) {
-          this.step = 1
-        }
-        //if (!this.onPlatform) {
-        ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
-        //}
-      }
-      else if (this.space) {
-        this.spriteLine = 440
-        this.step = this.step
+    }
+    else if (this.left) {
 
-        ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y, this.playerWidth, this.playerHeight)
+      this.spriteLine = 110
+      this.step = this.step - 10
 
+      if (this.step < 0) {
+        this.step = 1
       }
-      /*
-      else if (this.down) {
-        this.spriteLine = 110
-        this.stepUpDown = this.stepUpDown - 10
-        ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y + this.stepUpDown, this.playerWidth, this.playerHeight)
-      }
-      */
-      else if (this.nothing) {
-        ctx.drawImage(this.image, this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
-      }
+      //if (!this.onPlatform) {
+      ctx.drawImage(this.image, this.playerWidth * 6, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
+      //}
+    }
+    else if (this.space) {
+
+      this.spriteLine = 440
+      this.step = this.step
+
+      ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y, this.playerWidth, this.playerHeight)
+
+    }
+    /*
+    else if (this.down) { --> Usado para descer duma plataforma
+      this.spriteLine = 110
+      this.stepUpDown = this.stepUpDown - 10
+      ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y + this.stepUpDown, this.playerWidth, this.playerHeight)
+    }
+    */
+
+    else if (this.nothing) {
+      ctx.drawImage(this.image, this.playerWidth, this.spriteLine, this.playerWidth, this.playerHeight, this.step, canvas.height - this.playerHeight, this.playerWidth, this.playerHeight)
     }
 
-    //This will serve for the sprite come down
+    /*Isto serve como "gravidade"
     if (!(this.up)) {
       this.spriteLine = 110
       this.stepUpDown = this.stepUpDown - 10
       ctx.drawImage(this.image, this.playerWidth * 3, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y - this.stepUpDown, this.playerWidth, this.playerHeight)
 
-      /*
+      
       if (this.getCurrentPos().y - this.stepUpDown <= platform1.y && (this.getCurrentPos().x <= platform1.x)) {
         this.ground = platform1.y - this.playerHeight
         this.onPlatform = true
-      }*/
+      }
 
     }
     if (this.up) {
@@ -267,7 +260,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
 
     if (this.stepUpDown <= 10) {
       this.stepUpDown = 10
-    }
+    }*/
   }
 
   this.getCurrentPos = function () {
@@ -279,9 +272,11 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
     }
     return playerPos
   }
+
 }
 
 function Harpoon(position) {
+
   this.x = position.x
   this.y = position.y
   this.increment = 0
@@ -296,6 +291,7 @@ function Harpoon(position) {
     ctx.stroke()
     this.increment += 10
   }
+
   this.getCurrentPos = function () {
 
     let harpoonPos = { x: this.x - 2.5, y: this.y - this.increment, x1: this.x + 2.5 }
@@ -305,6 +301,7 @@ function Harpoon(position) {
 }
 
 function Ball(x, y, vx, vy, radius, speed, velIn, ang) {
+
   this.x = x
   this.y = y
   this.vx = vx
@@ -317,58 +314,45 @@ function Ball(x, y, vx, vy, radius, speed, velIn, ang) {
   this.tempvy = 0
 
   this.draw = function () {
+
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     ctx.fillStyle = 'red'
     ctx.fill();
+
   }
 
   this.update = function () {
-    //Freeze power up
-    /*if (powerup3 == true) {
-      if (this.tempvx == 0 && this.tempvy == 0) {
-        this.tempvx = this.vx //Save vx and vy
-        this.tempvy = this.vy
-        this.vx = 0
-        this.vy = 0
-        console.log("vx: " + this.vx)
-        console.log("vy: " + this.vy)
-        //Need to stop gravity
-      }
-    }
-    else if (powerup3 == false) {
-      if (this.vx == 0 && this.vy == 0) {
-        this.vx = this.tempvx //Recover moviment
-        this.vy = this.tempvy
-        this.tempvx = 0
-        this.tempvy = 0
-      }
-    }*/
 
     this.x += this.vx
     this.y += this.vy
-    //console.log("vy: " + this.vy)
+
     if (this.y + this.radius >= canvas.height) {
+
       this.vy = -this.vy
-      //this.y = canvas.height- this.radius
-      //this.vy = (this.velIn + 20) * Math.sin(this.ang * Math.PI / 180)
+
     }
     else if (this.x + this.radius >= canvas.width) {
+
       this.vx = -this.vx
-      //this.x = canvas.width- this.radius
+
     }
     else if (this.x - this.radius <= 0) {
+
       this.vx = -this.vx
-      //this.x = this.radius
+
     }
     else if (this.y - this.radius <= 0) {
-      this.vy = -this.vy
-      //this.y = this.radius
-    } else {
-      this.vy += this.speed
-    }
 
+      this.vy = -this.vy
+
+    } else {
+
+      this.vy += this.speed
+
+    }
   }
+
   this.getCurrentPos = function () {
 
     let ballPos = { x: this.x, y: this.y, r: this.radius }
@@ -408,22 +392,22 @@ function powerupActivate(i) {
 
 window.onload = function () {
 
-
-  //balls.push(new Ball(x, y, vx, vy, radius, speed, velIn, ang))
-  //platform1 = (new Platform(500, 300, 500, 50))
-
   menu()
 
 }
 
 function Animate() {
+
   level = false
+
+  //É aqui onde lemos o array que contém os níveis, e os criamos
   if (creationOfLevel) {
+
     for (let i = 0; i < levels.length; i++) {
 
       if (currentLevel == levels[i].number) {
 
-        //This will insert all the data into the level
+        //Aqui vai inserir todos os dados dos níveis nas suas variáveis respetivas
         for (let j = levels[i].ballsBig; j > 0; j--) {
 
           let x = (j) * 200
@@ -436,31 +420,35 @@ function Animate() {
           let vy = velIn * Math.sin(ang * Math.PI / 180)
 
           balls.push(new Ball(x, y, vx, vy, radius, speed, velIn, ang))
+
         }
 
+        /*
         for (let a = 0; a < levels[i].platforms.length; a++) {
 
           let plats = levels[i].platforms[a]
 
           platforms.push(new Platform(plats.x, plats.y, plats.w, plats.h))
 
-        }
+        }*/
 
         backgroundSrc = levels[i].backgroundSrc
 
       }
     }
-    creationOfLevel = false
+
+    creationOfLevel = false //Esta flag tem um propósito muito importante, pois sempre que corremos o Animate, se não tivermos esta flag, ele vai estar sempre a criar o nível. Por isso é que quando acaba o nível (todas as bolas
+    // são destruídas), metemos esta variável a true e acrescentamos um valor à variavel currentLevel
+
   }
 
   let background = new Image()
   background.src = backgroundSrc
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height)
 
-  // player
   player1.draw();
 
-  //ListenEvent and Draw player mov
+  //Escutar os eventos acionados
   if (space) {
     player1.listenEvent(false, false, false, currentFrame, false, false, true)
   }
@@ -471,77 +459,93 @@ function Animate() {
     else if (left) {
       player1.listenEvent(false, true, false, currentFrame, false, false, false)
     }
-    else if (up) {
+    /*else if (up) {
       player1.listenEvent(false, false, false, currentFrame, true, false, false)
     }
     else if (down) {
       player1.listenEvent(false, false, false, currentFrame, false, true, false)
-    }
+    }*/
     else {
       player1.listenEvent(false, false, true, currentFrame, false, false, false)
     }
   }
 
   for (let i = 0; i < powerups.length; i++) {
+
     powerups[i].draw()
 
   }
   for (let i = 0; i < powerups.length; i++) {
+
     powerups[i].update()
 
+    //Colisão dos PowerUps com o Player
     if (powerups[i].getCurrentPos().x <= player1.getCurrentPos().x + playerWidth &&
       powerups[i].getCurrentPos().x + 50 >= player1.getCurrentPos().x &&
       powerups[i].getCurrentPos().y <= player1.getCurrentPos().y + playerHeight &&
-      powerups[i].getCurrentPos().y + 50 >= player1.getCurrentPos().y
-    ) {
-      console.log("Powerup activate")
+      powerups[i].getCurrentPos().y + 50 >= player1.getCurrentPos().y) {
+
       powerupActivate(i)
       powerups.splice(i, 1)
+
+      powerUpFrame = currentFrame
+
     }
   }
 
   for (let i = 0; i < harpoons.length; i++) {
+
     harpoons[i].draw()
+
   }
 
   for (let j = 0; j < harpoons.length; j++) {
+
     if (powerup1 == true) {
-      //If space splice 
+
       if (space) { harpoons.splice(j, 1) }
+
     }
     else if (powerup1 == false) {
+
       if (harpoons[j].y - harpoons[j].increment < 10) {
         harpoons.splice(j, 1)
       }
+
     }
   }
 
   for (let h = 0; h < balls.length; h++) {
+
     balls[h].draw()
+
   }
 
+  /*
   for (let i = 0; i < platforms.length; i++) {
 
     platforms[i].draw()
 
-  }
+  }*/
 
   for (let q = 0; q < balls.length; q++) {
-    //Freeze
-    if (powerup3 == false) {
+
+    if (powerup3 == false) { //Só damos update às bolas se o PowerUp Freeze estiver inativo
 
       balls[q].update()
 
+      /* Infelizmente, após várias tentativas, as plataformas não ficaram a 100% como nó desejávamos, mas deixaremos aqui o código pois não se sabe o que o futuro nos espera
       for (let j = 0; j < platforms.length; j++) {
 
         //Down Collision
         if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= platforms[j].x &&
           balls[q].getCurrentPos().x + balls[q].getCurrentPos().r <= platforms[j].x + platforms[j].width &&
           balls[q].getCurrentPos().y - balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height - 1 &&
-          balls[q].getCurrentPos().y - balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height + 1) { //Here we decided to check if its in an interval, for better results
+          balls[q].getCurrentPos().y - balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height + 1) { //Decidimos aqui fazer a intereseção num intervalo, pois assim temos uma maior margem
           console.log("Bateu em baixo")
           balls[q].vy = -balls[q].vy
         }
+
         //Up Collision
         else if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= platforms[j].x &&
           balls[q].getCurrentPos().x + balls[q].getCurrentPos().r <= platforms[j].x + platforms[j].width &&
@@ -550,6 +554,7 @@ function Animate() {
           console.log("Bateu em cima")
           balls[q].vy = -balls[q].vy
         }
+
         //Left Collision
         else if ((balls[q].getCurrentPos().y + balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height ||
           balls[q].getCurrentPos().y - balls[q].getCurrentPos().r >= platforms[j].y) &&
@@ -557,6 +562,7 @@ function Animate() {
           console.log("Bateu em esquerda")
           balls[q].vx = -balls[q].vx
         }
+
         //Right Collision
         else if ((balls[q].getCurrentPos().y + balls[q].getCurrentPos().r <= platforms[j].y + platforms[j].height ||
           balls[q].getCurrentPos().y - balls[q].getCurrentPos().r >= platforms[j].y) &&
@@ -565,18 +571,18 @@ function Animate() {
           balls[q].vx = -balls[q].vx
         }
       }
+      */
     }
     for (let j = 0; j < harpoons.length; j++) {
 
-      //Collision with harpoon
+      //Colisão com os harpões
       if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().x
         && balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= harpoons[j].getCurrentPos().x1
-        && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().y
-      ) {
+        && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= harpoons[j].getCurrentPos().y) {
 
         scoreMultiplier += 0.1
         currentScore = parseInt(currentScore + (scorePlus * scoreMultiplier))
-        console.log("Score: "+ currentScore)
+
         harpoons.splice(j, 1)
 
         if (!(balls[q].getCurrentPos().r == minimumRadius)) {
@@ -590,6 +596,8 @@ function Animate() {
         randPUP = Math.floor(Math.random() * 5)
 
         if (randPUP == 1) {
+
+          //Aqui criamos o powerup
           let x = balls[q].getCurrentPos().x - 25
           let y = balls[q].getCurrentPos().y - 25
           let id = Math.floor(Math.random() * 4) + 1
@@ -597,69 +605,71 @@ function Animate() {
           powerups.push(new PowerUp(x, y, id, img))
 
         }
-
-
       }
-
     }
 
     if (balls[q].getCurrentPos().x + balls[q].getCurrentPos().r >= player1.getCurrentPos().x
       && balls[q].getCurrentPos().x - balls[q].getCurrentPos().r <= player1.getCurrentPos().x + playerWidth
-      && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= player1.getCurrentPos().y
-    ) {
+      && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= player1.getCurrentPos().y) {
+
       scoreMultiplier = 1
+      
       if (lives > 0) {
         lives--
       }
 
       if (lives == 0) {
+
         gameOverBool = true
-        if(currentScore > localStorage.getItem("currentBest")){ 
+
+        if (currentScore > localStorage.getItem("currentBest")) {
           currentBest = currentScore
           localStorage.setItem("currentBest", currentBest)
         }
+
         gameOver()
+
       }
     }
-
   }
-  //ver posicao no codigo
+
+  //Passagem de nível ou Jogo ganho
   if (balls.length == 0) {
+
     powerups = []
     creationOfLevel = true
     currentLevel++
+
     if (currentLevel == 4) {
+
       gameWonBool = true
-      if(currentScore > localStorage.getItem("currentBest")){ 
+
+      if (currentScore > localStorage.getItem("currentBest")) {
         currentBest = currentScore
         localStorage.setItem("currentBest", currentBest)
       }
+
       gameWon()
     }
     else {
-      
+
       LevelWon()
+
     }
 
   }
-  console.log(currentLevel)
 
-  //Update sprite location and stop PowerUpFreeze
+  //Update à localização do sprite e timer dos powerups
   currentFrame++
-  if (currentFrame >= 500) {
-    currentFrame = 0
+
+  if (currentFrame - powerUpFrame >= 500) {
+
+    powerUpFrame = 0
     powerup3 = false
+    powerup2 = false
+    powerup1 = false
+
   }
-
-  //draw platform tests
-  //platform1.draw()
-
-  //window.requestAnimationFrame(Animate)
-  //Draw lives
-  // if (startGame) {
-  //   ctx.font = "16px Arial"
-  //   ctx.fillText("lives: " + lives, 8, 20)
-  // }
 
   if (gameWonBool == false && level == false) {
     switch (lives) {
@@ -700,9 +710,6 @@ function Animate() {
     ctx.fillStyle = "white"
     ctx.fillText("Score: " + currentScore, 850, 30)
   }
-  
-
-
 }
 
 function divideBall(x, y, r) {
@@ -721,6 +728,7 @@ function divideBall(x, y, r) {
     flag++
 
   }
+
   if (flag == 2) {
 
     let ang = ((Math.PI / 4))
@@ -735,8 +743,10 @@ function divideBall(x, y, r) {
 }
 
 function menu() {
+
   scoreMultiplier = 1
   currentScore = 0
+
   //Menu
   menuBool = true
   levelsMenuBool = false
@@ -774,11 +784,10 @@ function menu() {
   let textWidth4 = ctx.measureText(text4).width
   ctx.fillText(text4, (canvas.width / 2) - (textWidth4 / 2), 550)
 
-
-  console.log(menuBool)
 }
 
 function Controls() {
+
   controlsBool = true
   ctx.fillStyle = "black"
   ctx.rect(0, 0, canvas.width, canvas.height)
@@ -801,9 +810,11 @@ function Controls() {
   let text2 = "Back"
   let textWidth2 = ctx.measureText(text2).width
   ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 500)
+
 }
 
 function gameOver() {
+
   startGame = false
   clearInterval(animation)
 
@@ -825,6 +836,7 @@ function gameOver() {
 }
 
 function Pause() {
+
   ctx.fillStyle = "rgb(0,0,0,0.8)"
   ctx.rect(0, 0, canvas.width, canvas.height)
   ctx.fill()
@@ -842,6 +854,7 @@ function Pause() {
 }
 
 function gameWon() {
+
   startGame = false
   clearInterval(animation)
 
@@ -880,9 +893,11 @@ function LevelWon() {
   let text2 = "Next Level"
   let textWidth2 = ctx.measureText(text2).width
   ctx.fillText(text2, (canvas.width / 2) - (textWidth2 / 2), 300)
+
 }
 
 function levelsMenu() {
+
   menuBool = false
   levelsMenuBool = true
   ctx.fillStyle = "black"
@@ -918,10 +933,10 @@ function levelsMenu() {
   let text5 = "Back"
   let textWidth5 = ctx.measureText(text5).width
   ctx.fillText(text5, (canvas.width / 2) - (textWidth5 / 2), 500)
-  
+
 }
 
-// Key press and Key Up - eventListener
+// Key press e Key Up - eventListener
 function keyDown(e) {
   switch (e.keyCode) {
     case 39:
@@ -1000,42 +1015,52 @@ function mouseFunction(e) {
     if (levelsMenuBool == false) {
 
       if (mouseY < 375 && mouseY > 375 - 40 && mouseX < (canvas.width / 2) - (186.181640625 / 2) + 186.181640625 && mouseX > (canvas.width / 2) - (186.181640625 / 2)) { //textheight = 40, textwidth = 186.181640625
-        console.log("entrou controls")
+
         Controls()
+
       }
-      console.log(menuBool)
-      
-        if (mouseY < 475 && mouseY > 475 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
-          console.log("entrou menu")
-          menu()
-        }
-      
+
+      if (mouseY < 475 && mouseY > 475 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
+
+        menu()
+
+      }
+
     }
 
     if (controlsBool == false) {
+
       if (mouseY < 500 && mouseY > 500 - 40 && mouseX < (canvas.width / 2) - (144.53125 / 2) + 144.53125 && mouseX > (canvas.width / 2) - (144.53125 / 2)) { //textheight = 40, textwidth = 186.181640625
-        console.log("entrou levels")
+
         levelsMenu()
+
       }
-      console.log(menuBool)
+
       if (menuBool == false) {
+
         if (mouseY < 225 && mouseY > 225 - 30 && mouseX < (canvas.width / 2) - (128.984375 / 2) + 128.984375 && mouseX > (canvas.width / 2) - (128.984375 / 2)) {
+
           startGame = false
-          console.log(gameOverBool, gameWonBool, startGame, level)
+
           startAnimation()
         }
+
         if (mouseY < 300 && mouseY > 300 - 30 && mouseX < (canvas.width / 2) - (128.984375 / 2) + 128.984375 && mouseX > (canvas.width / 2) - (128.984375 / 2)) {
+
           startGame = false
           currentLevel = 2
           startAnimation()
         }
+
         if (mouseY < 375 && mouseY > 375 - 30 && mouseX < (canvas.width / 2) - (128.984375 / 2) + 128.984375 && mouseX > (canvas.width / 2) - (128.984375 / 2)) {
+
           startGame = false
           currentLevel = 3
           startAnimation()
         }
+
         if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
-          console.log("entrou menu")
+
           menu()
         }
       }
@@ -1045,14 +1070,16 @@ function mouseFunction(e) {
 
   else {
     if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (212.109375 / 2) + 212.109375 && mouseX > (canvas.width / 2) - (212.109375 / 2)) { //textheight = 20, textwidth = 212.109375
+      
       if (gameOverBool == true || gameWonBool == true) {
         location.reload()
       }
     }
     if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (236.23046875 / 2) + 236.23046875 && mouseX > (canvas.width / 2) - (236.23046875 / 2)) {
+
       if (level == true) {
+
         startAnimation()
-        console.log(levelsMenuBool)
         level = false
       }
 
