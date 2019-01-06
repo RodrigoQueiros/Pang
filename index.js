@@ -671,7 +671,8 @@ function Animate() {
 
   }
 
-  if (gameWonBool == false && level == false) {
+  //Lives, Level and Score display in game
+  if (gameWonBool == false && level == false && gameOverBool == false) {
     switch (lives) {
       case 0:
         let a = new Image()
@@ -709,6 +710,12 @@ function Animate() {
     ctx.font = "25px Arial"
     ctx.fillStyle = "white"
     ctx.fillText("Score: " + currentScore, 850, 30)
+
+    ctx.font = "25px Arial"
+    ctx.fillStyle = "white"
+    let textLevel = "Level: " + currentLevel
+    let textWidthLevel = ctx.measureText(textLevel).width
+    ctx.fillText(textLevel, (canvas.width / 2) - (textWidthLevel / 2), 30)
   }
 }
 
