@@ -845,7 +845,7 @@ function gameOver() {
   ctx.fill()
   ctx.font = "60px Arial"
   ctx.fillStyle = "white"
-  let text = "Game Over"
+  let text = "Game Over!"
   let textWidth = ctx.measureText(text).width
   ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 200)
 
@@ -885,7 +885,7 @@ function gameWon() {
   ctx.fill()
   ctx.font = "60px Arial"
   ctx.fillStyle = "white"
-  let text = "You Win"
+  let text = "You Win!"
   let textWidth = ctx.measureText(text).width
   ctx.fillText(text, (canvas.width / 2) - (textWidth / 2), 200)
 
