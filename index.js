@@ -751,9 +751,11 @@ function menu() {
   menuBool = true
   levelsMenuBool = false
   controlsBool = false
+
   ctx.fillStyle = "black"
   ctx.rect(0, 0, canvas.width, canvas.height)
   ctx.fill()
+
   let img = new Image()
   img.src = "images2/pang.png" //https://i.imgur.com/7Gc8NXt.png
   img.addEventListener("load", function () {
@@ -1013,54 +1015,41 @@ function mouseFunction(e) {
     }
 
     if (levelsMenuBool == false) {
-
       if (mouseY < 375 && mouseY > 375 - 40 && mouseX < (canvas.width / 2) - (186.181640625 / 2) + 186.181640625 && mouseX > (canvas.width / 2) - (186.181640625 / 2)) { //textheight = 40, textwidth = 186.181640625
-
         Controls()
-
       }
 
-      if (mouseY < 475 && mouseY > 475 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
-
+      if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
         menu()
-
       }
 
     }
 
     if (controlsBool == false) {
-
-      if (mouseY < 500 && mouseY > 500 - 40 && mouseX < (canvas.width / 2) - (144.53125 / 2) + 144.53125 && mouseX > (canvas.width / 2) - (144.53125 / 2)) { //textheight = 40, textwidth = 186.181640625
-
+      if (mouseY < 475 && mouseY > 475 - 40 && mouseX < (canvas.width / 2) - (144.53125 / 2) + 144.53125 && mouseX > (canvas.width / 2) - (144.53125 / 2)) { //textheight = 40, textwidth = 186.181640625
         levelsMenu()
-
       }
 
       if (menuBool == false) {
-
         if (mouseY < 225 && mouseY > 225 - 30 && mouseX < (canvas.width / 2) - (128.984375 / 2) + 128.984375 && mouseX > (canvas.width / 2) - (128.984375 / 2)) {
-
           startGame = false
-
           startAnimation()
         }
 
         if (mouseY < 300 && mouseY > 300 - 30 && mouseX < (canvas.width / 2) - (128.984375 / 2) + 128.984375 && mouseX > (canvas.width / 2) - (128.984375 / 2)) {
-
           startGame = false
           currentLevel = 2
           startAnimation()
         }
 
         if (mouseY < 375 && mouseY > 375 - 30 && mouseX < (canvas.width / 2) - (128.984375 / 2) + 128.984375 && mouseX > (canvas.width / 2) - (128.984375 / 2)) {
-
           startGame = false
           currentLevel = 3
           startAnimation()
         }
 
         if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (55.57861328125 / 2) + 55.57861328125 && mouseX > (canvas.width / 2) - (55.57861328125 / 2)) { //textheight = 20, textwidth = 55.57861328125
-
+          console.log("back")
           menu()
         }
       }
@@ -1070,15 +1059,12 @@ function mouseFunction(e) {
 
   else {
     if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (212.109375 / 2) + 212.109375 && mouseX > (canvas.width / 2) - (212.109375 / 2)) { //textheight = 20, textwidth = 212.109375
-      
       if (gameOverBool == true || gameWonBool == true) {
         location.reload()
       }
     }
     if (mouseY < 300 && mouseY > 300 - 40 && mouseX < (canvas.width / 2) - (236.23046875 / 2) + 236.23046875 && mouseX > (canvas.width / 2) - (236.23046875 / 2)) {
-
       if (level == true) {
-
         startAnimation()
         level = false
       }
