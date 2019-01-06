@@ -533,6 +533,9 @@ function Animate() {
     if (powerup3 == false) { //Só damos update às bolas se o PowerUp Freeze estiver inativo
 
       balls[q].update()
+      if( balls[q].getCurrentPos().y  - balls[q].getCurrentPos().r < 0){
+        balls.splice(q, 1)
+      }
 
       /* Infelizmente, após várias tentativas, as plataformas não ficaram a 100% como nó desejávamos, mas deixaremos aqui o código pois não se sabe o que o futuro nos espera
       for (let j = 0; j < platforms.length; j++) {
