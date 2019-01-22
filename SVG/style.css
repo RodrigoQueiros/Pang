@@ -49,81 +49,101 @@ svg {
 .star21 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
-    animation-delay:2.5s;
+    animation-delay:3.5s;
     animation-fill-mode: forwards;
 }
 .star22 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
-    animation-delay:3s;
+    animation-delay:4s;
     animation-fill-mode: forwards;
 }
 .star23 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
-    animation-delay:2.5s;
+    animation-delay:3.5s;
     animation-fill-mode: forwards;
 }
 .star24 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
-    animation-delay:3s;
+    animation-delay:4s;
     animation-fill-mode: forwards;
 }
 .star25 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
-    animation-delay:2.5s;
+    animation-delay:3.5s;
     animation-fill-mode: forwards;
 }
 .star26 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
-    animation-delay:3s;
+    animation-delay:4s;
     animation-fill-mode: forwards;
 }
 .star27 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
-    animation-delay:2.5s;
+    animation-delay:3.5s;
     animation-fill-mode: forwards;
 }
 .star28 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
-    animation-delay:4.5s;
+    animation-delay:5.5s;
     animation-fill-mode: forwards;
 }
 .star29 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
-    animation-delay:2.5s;
+    animation-delay:3.5s;
     animation-fill-mode: forwards;
 }
 .star210 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
-    animation-delay:3s;
+    animation-delay:4s;
     animation-fill-mode: forwards;
 }
 .star211 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
-    animation-delay:4.5s;
+    animation-delay:5.5s;
     animation-fill-mode: forwards;
 }
 .star212 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
-    animation-delay:2.5s;
+    animation-delay:3.5s;
     animation-fill-mode: forwards;
 }
 .star213 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
+    animation-delay:5.5s;
+    animation-fill-mode: forwards;
+}
+.star214 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:3.5s;
+    animation-fill-mode: forwards;
+}
+.star215 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
     animation-delay:4.5s;
     animation-fill-mode: forwards;
 }
+.star216 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:5.5s;
+    animation-fill-mode: forwards;
+}
+
+
 
 @keyframes starBlink{
     from {
@@ -132,5 +152,53 @@ svg {
     to {
         opacity: 1;
         
+    }
+}
+
+#YellowLight{ /* Melghorar esta animação*/
+    transform: rotateY(180deg);
+    opacity: 0;
+    transform-origin: 50% 20%;
+    animation: 1s linear showLight;
+    animation-delay:2.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes showLight{
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+        transform: rotateY(0deg);
+    }
+}
+
+#Magic{
+    opacity: 0;
+    animation: 1s linear showLetter;
+    animation-delay:4.5s;
+    animation-fill-mode: forwards;
+}
+
+#Kamek{
+    /*transform: scale(0, 0);*/
+    
+    transform-origin: 10% 55%;
+    animation: 10s linear kamek;
+    animation-delay:1s; /* 6.5*/
+    animation-fill-mode: forwards;
+}
+
+@keyframes kamek{
+    0% {
+        transform: translateX(300);
+    }/*
+    20% {
+        transform: scale(1, 1);
+    }*/
+    100% {
+        
+        transform: translateX(20 );
     }
 }
