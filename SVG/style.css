@@ -46,10 +46,83 @@ svg {
     }
 }
 
-#Stars2{
+.star21 {
     opacity: 0;
     animation: 349ms infinite linear alternate starBlink;
     animation-delay:2.5s;
+    animation-fill-mode: forwards;
+}
+.star22 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:3s;
+    animation-fill-mode: forwards;
+}
+.star23 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:2.5s;
+    animation-fill-mode: forwards;
+}
+.star24 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:3s;
+    animation-fill-mode: forwards;
+}
+.star25 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:2.5s;
+    animation-fill-mode: forwards;
+}
+.star26 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:3s;
+    animation-fill-mode: forwards;
+}
+.star27 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:2.5s;
+    animation-fill-mode: forwards;
+}
+.star28 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:4.5s;
+    animation-fill-mode: forwards;
+}
+.star29 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:2.5s;
+    animation-fill-mode: forwards;
+}
+.star210 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:3s;
+    animation-fill-mode: forwards;
+}
+.star211 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:4.5s;
+    animation-fill-mode: forwards;
+}
+.star212 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:2.5s;
+    animation-fill-mode: forwards;
+}
+.star213 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:4.5s;
+    animation-fill-mode: forwards;
 }
 
 @keyframes starBlink{
