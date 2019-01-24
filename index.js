@@ -1,6 +1,9 @@
 let canvas = document.getElementById("canvasPang");
 let ctx = canvas.getContext("2d");
 
+/*SOunds*/
+let theme = new Audio("Theme.mp3");
+
 canvas.width = 1000;
 canvas.height = 600;
 
@@ -230,7 +233,7 @@ function Player(image, playerWidth, playerHeight, step, spriteLine) {
     }
     else if (this.space) {
 
-      this.spriteLine =220
+      this.spriteLine = 220
       this.step = this.step
 
       ctx.drawImage(this.image, this.playerWidth * 4, this.spriteLine, this.playerWidth, this.playerHeight, this.getCurrentPos().x, this.getCurrentPos().y, this.playerWidth, this.playerHeight)
@@ -543,7 +546,7 @@ function Animate() {
     if (powerup3 == false) { //Só damos update às bolas se o PowerUp Freeze estiver inativo
 
       balls[q].update()
-      if( balls[q].getCurrentPos().y  - balls[q].getCurrentPos().r < 0){
+      if (balls[q].getCurrentPos().y - balls[q].getCurrentPos().r < 0) {
         balls.splice(q, 1)
       }
 
@@ -626,7 +629,7 @@ function Animate() {
       && balls[q].getCurrentPos().y + balls[q].getCurrentPos().r >= player1.getCurrentPos().y) {
 
       scoreMultiplier = 1
-      
+
       if (lives > 0) {
         lives--
       }
@@ -1028,25 +1031,25 @@ function mouseFunction(e) {
   let mouseY = e.pageY - canvas.offsetTop
   if (startGame == true) {
     if (controlsBool == false && levelsMenuBool == false) {
-      if (mouseY < 275 && mouseY > 275 - 40 && mouseX < (canvas.width / 2) - (textWidthStartGame / 2) + textWidthStartGame && mouseX > (canvas.width / 2) - (textWidthStartGame / 2)) { 
+      if (mouseY < 275 && mouseY > 275 - 40 && mouseX < (canvas.width / 2) - (textWidthStartGame / 2) + textWidthStartGame && mouseX > (canvas.width / 2) - (textWidthStartGame / 2)) {
         startAnimation()
         startGame = false
       }
     }
 
     if (levelsMenuBool == false) {
-      if (mouseY < 375 && mouseY > 375 - 40 && mouseX < (canvas.width / 2) - (textWidthControls / 2) + textWidthControls && mouseX > (canvas.width / 2) - (textWidthControls / 2)) { 
+      if (mouseY < 375 && mouseY > 375 - 40 && mouseX < (canvas.width / 2) - (textWidthControls / 2) + textWidthControls && mouseX > (canvas.width / 2) - (textWidthControls / 2)) {
         Controls()
       }
 
-      if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (textWidthBack / 2) + textWidthBack && mouseX > (canvas.width / 2) - (textWidthBack / 2)) { 
+      if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (textWidthBack / 2) + textWidthBack && mouseX > (canvas.width / 2) - (textWidthBack / 2)) {
         menu()
       }
 
     }
 
     if (controlsBool == false) {
-      if (mouseY < 475 && mouseY > 475 - 40 && mouseX < (canvas.width / 2) - (textWidthLevels / 2) + textWidthLevels && mouseX > (canvas.width / 2) - (textWidthLevels / 2)) { 
+      if (mouseY < 475 && mouseY > 475 - 40 && mouseX < (canvas.width / 2) - (textWidthLevels / 2) + textWidthLevels && mouseX > (canvas.width / 2) - (textWidthLevels / 2)) {
         levelsMenu()
       }
 
@@ -1068,7 +1071,7 @@ function mouseFunction(e) {
           startAnimation()
         }
 
-        if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (textWidthBack / 2) + textWidthBack && mouseX > (canvas.width / 2) - (textWidthBack / 2)) { 
+        if (mouseY < 500 && mouseY > 500 - 20 && mouseX < (canvas.width / 2) - (textWidthBack / 2) + textWidthBack && mouseX > (canvas.width / 2) - (textWidthBack / 2)) {
           menu()
         }
       }
@@ -1077,7 +1080,7 @@ function mouseFunction(e) {
   }
 
   else {
-    if (mouseY < 350 && mouseY > 350 - 40 && mouseX < (canvas.width / 2) - (textWidthReturnToMenu / 2) + textWidthReturnToMenu && mouseX > (canvas.width / 2) - (textWidthReturnToMenu / 2)) { 
+    if (mouseY < 350 && mouseY > 350 - 40 && mouseX < (canvas.width / 2) - (textWidthReturnToMenu / 2) + textWidthReturnToMenu && mouseX > (canvas.width / 2) - (textWidthReturnToMenu / 2)) {
       if (gameOverBool == true || gameWonBool == true) {
         location.reload()
       }
