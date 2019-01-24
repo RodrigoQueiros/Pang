@@ -4,6 +4,26 @@ let ctx = canvas.getContext("2d");
 canvas.width = 1000;
 canvas.height = 600;
 
+//Sounds
+
+//Theme
+let theme = document.createElement("audio");
+theme.src = "./Sounds/Theme.mp3";
+theme.setAttribute("preload", "auto");
+theme.setAttribute("controls", "none");
+theme.style.display = "none";
+document.body.appendChild(theme);
+
+theme.play();
+
+//Level Won
+let lvlWon = document.createElement("audio");
+lvlWon.src = "./Sounds/NextLevel.mp3";
+lvlWon.setAttribute("preload", "auto");
+lvlWon.setAttribute("controls", "none");
+lvlWon.style.display = "none";
+document.body.appendChild(lvlWon);
+
 //Player e controlos
 let currentFrame = 0
 let right = false
@@ -401,15 +421,6 @@ function powerupActivate(i) {
 }
 
 window.onload = function () {
-
-  this.sound = document.createElement("audio");
-  this.sound.src = "./Sounds/Theme.mp3";
-  this.sound.setAttribute("preload", "auto");
-  this.sound.setAttribute("controls", "none");
-  this.sound.style.display = "none";
-  document.body.appendChild(this.sound);
-
-  this.sound.play();
 
 
   menu()
@@ -926,6 +937,9 @@ function LevelWon() {
   textWidthNextLevel = ctx.measureText(text2).width
   ctx.fillText(text2, (canvas.width / 2) - (textWidthNextLevel / 2), 350)
 
+  theme.pause()
+  lvlWon.play()
+
 }
 
 function levelsMenu() {
@@ -1094,6 +1108,7 @@ function mouseFunction(e) {
     }
     if (mouseY < 350 && mouseY > 350 - 40 && mouseX < (canvas.width / 2) - (textWidthNextLevel / 2) + textWidthNextLevel && mouseX > (canvas.width / 2) - (textWidthNextLevel / 2)) {
       if (level == true) {
+        theme.play()
         startAnimation()
         level = false
       }
