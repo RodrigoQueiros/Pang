@@ -1,9 +1,6 @@
 let canvas = document.getElementById("canvasPang");
 let ctx = canvas.getContext("2d");
 
-/*SOunds*/
-let theme = new Audio("Theme.mp3");
-
 canvas.width = 1000;
 canvas.height = 600;
 
@@ -404,6 +401,16 @@ function powerupActivate(i) {
 }
 
 window.onload = function () {
+
+  this.sound = document.createElement("audio");
+  this.sound.src = "./Sounds/Theme.mp3";
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+
+  this.sound.play();
+
 
   menu()
 
