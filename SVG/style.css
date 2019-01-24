@@ -185,21 +185,199 @@ svg {
     /*transform: scale(0, 0);*/
     
     /*transform-origin: 10% 55%;*/
-    transform: translate(800px,0px);
-    animation: 10s linear kamek;
-    animation-delay:1s; /* 6.5*/
+    transform: translate(800px,0px) scale(0.1,0.1);
+    animation: 5s linear kamek;
+    animation-delay:5s; /* 6.5*/
     animation-fill-mode: forwards;
+}
+#RainbowPath{
+    opacity:0;
 }
 
 @keyframes kamek{
     0% {
         
-    }/*
+    }
     20% {
-        transform: scale(1, 1);
-    }*/
-    100% {
-        transform: translateX(-800px) scale(2,2);
+        transform: translate(600px,100px);
+    }
+    40%{
+        transform: translate(500px,100px);
+    }
+    60% {
+        transform: translate(-50px,-400px) scale(2,2)
+    }
+    100%{
+        transform: translate(-50px,-400px) scale(2,2)
     }
 }
 
+.star11 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:6.5s;
+    animation-fill-mode: forwards;
+}
+
+.star12 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:7.5s;
+    animation-fill-mode: forwards;
+}
+.star13 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:6.5s;
+    animation-fill-mode: forwards;
+}
+.star14 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:6s;
+    animation-fill-mode: forwards;
+}
+.star15 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:8s;
+    animation-fill-mode: forwards;
+}
+.star16 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:6s;
+    animation-fill-mode: forwards;
+}
+.star17 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:6.5s;
+    animation-fill-mode: forwards;
+}
+.star18 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:7s;
+    animation-fill-mode: forwards;
+}
+.star19 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:7s;
+    animation-fill-mode: forwards;
+}
+.star110 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:6s;
+    animation-fill-mode: forwards;
+}
+.star111 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:6.5s;
+    animation-fill-mode: forwards;
+}
+.star112 {
+    opacity: 0;
+    animation: 449ms infinite linear alternate starBlink;
+    animation-delay:7s;
+    animation-fill-mode: forwards;
+}
+.star113 {
+    opacity: 0;
+    animation: 449ms infinite linear alternate starBlink;
+    animation-delay:7.5s;
+    animation-fill-mode: forwards;
+}
+.star114 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:7.5s;
+    animation-fill-mode: forwards;
+}
+.star115 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:8s;
+    animation-fill-mode: forwards;
+}
+.star116 {
+    opacity: 0;
+    animation: 249ms infinite linear alternate starBlink;
+    animation-delay:6s;
+    animation-fill-mode: forwards;
+}
+.star117 {
+    opacity: 0;
+    animation: 249ms infinite linear alternate starBlink;
+    animation-delay:8s;
+    animation-fill-mode: forwards;
+}
+.star118 {
+    opacity: 0;
+    animation: 549ms infinite linear alternate starBlink;
+    animation-delay:7s;
+    animation-fill-mode: forwards;
+}
+.star119 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:7s;
+    animation-fill-mode: forwards;
+}
+.star120 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:7.5s;
+    animation-fill-mode: forwards;
+}
+.star121 {
+    opacity: 0;
+    animation: 649ms infinite linear alternate starBlink;
+    animation-delay:8s;
+    animation-fill-mode: forwards;
+}
+.star122 {
+    opacity: 0;
+    animation: 249ms infinite linear alternate starBlink;
+    animation-delay:8s;
+    animation-fill-mode: forwards;
+}
+.star123 {
+    opacity: 0;
+    animation: 449ms infinite linear alternate starBlink;
+    animation-delay:7.5s;
+    animation-fill-mode: forwards;
+}
+.star124 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:8s;
+    animation-fill-mode: forwards;
+}
+.star125 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:8s;
+    animation-fill-mode: forwards;
+}
+.star126{
+    opacity: 0;
+    animation: 249ms infinite linear alternate starBlink;
+    animation-delay:7.5s;
+    animation-fill-mode: forwards;
+}
+.star127 {
+    opacity: 0;
+    animation: 449ms infinite linear alternate starBlink;
+    animation-delay:8s;
+    animation-fill-mode: forwards;
+}
+.star128 {
+    opacity: 0;
+    animation: 349ms infinite linear alternate starBlink;
+    animation-delay:7.5s;
+    animation-fill-mode: forwards;
+}
