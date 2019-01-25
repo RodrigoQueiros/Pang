@@ -10,7 +10,7 @@ This project arose from the curricular unit of Graphic Animation belonging to th
 ## This repository contains:
 * Pang magic code
 * Intro svg code
-* Trailer and music developed by us
+* Trailer and music Trademarked by Pang Magic
 * 2 Reports of the project (in portuguese)
 
 ## Picture of the game
