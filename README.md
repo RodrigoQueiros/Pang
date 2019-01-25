@@ -11,7 +11,7 @@ This project arose from the curricular unit of Graphic Animation belonging to th
 * Pang magic code
 * Intro svg code
 * Trailer and music developed by us
-* Report of the project
+* 2 Reports of the project (in portuguese)
 
 ## Picture of the game
 ![](/images2/print.PNG )
