@@ -15,5 +15,11 @@ This project arose from the curricular unit of Graphic Animation belonging to th
 
 ## Picture of the game
 ![](/images2/print.PNG )
+## Controls
+![](/images2/controls2.PNG )
+## Intro 
+![](PangMagic.gif)
+
+
 
 january 2019
