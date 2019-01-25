@@ -1,4 +1,4 @@
-# Pang magic
+![GitHub Logo ](/images2/logo.png )
 
 
 
@@ -13,7 +13,7 @@ This project arose from the curricular unit of Graphic Animation belonging to th
 * Trailer and music developed by us
 * Report of the project
 
-
-
+## Picture of the game
+![](/images2/print.PNG )
 
 january 2019
