@@ -21,5 +21,4 @@ This project arose from the curricular unit of Graphic Animation belonging to th
 ![](PangMagic.gif)
 
 
-
 january 2019
